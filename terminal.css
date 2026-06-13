@@ -1,0 +1,320 @@
+/* =============================================
+   BITER TERMINAL — СТИЛИ
+   ============================================= */
+
+/* ── Кнопка-триггер ─────────────────────── */
+.t-trigger-btn {
+    position: fixed;
+    bottom: 5.5rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.65rem 1.2rem;
+    background: rgba(12, 8, 16, 0.9);
+    border: 1px solid rgba(255, 124, 42, 0.4);
+    border-radius: 50px;
+    color: var(--accent-cyan, #ff7c2a);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    z-index: 600;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(255, 124, 42, 0.15);
+}
+
+.t-trigger-btn:hover {
+    border-color: var(--accent-cyan, #ff7c2a);
+    box-shadow: 0 0 30px rgba(255, 124, 42, 0.35), 0 8px 30px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+    background: rgba(255, 124, 42, 0.08);
+}
+
+.t-trigger-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* ── Оверлей ─────────────────────────────── */
+.t-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.t-overlay.t-open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ── Задний фон ──────────────────────────── */
+.t-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 3, 10, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Окно терминала ──────────────────────── */
+.t-window {
+    position: relative;
+    z-index: 1;
+    width: min(860px, 96vw);
+    max-height: 80vh;
+    background: rgba(10, 6, 18, 0.97);
+    border: 1px solid rgba(255, 124, 42, 0.25);
+    border-radius: 14px;
+    box-shadow:
+        0 0 0 1px rgba(255, 124, 42, 0.08),
+        0 40px 120px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(255, 124, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+.t-overlay.t-open .t-window {
+    transform: translateY(0) scale(1);
+}
+
+/* ── Title bar ──────────────────────────── */
+.t-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.85rem 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.t-dots {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.t-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.t-dot:hover { transform: scale(1.2); filter: brightness(1.3); }
+.t-dot-red    { background: #ff5f57; }
+.t-dot-yellow { background: #febc2e; cursor: default; }
+.t-dot-green  { background: #28c840; cursor: default; }
+
+.t-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.5px;
+}
+
+.t-badge {
+    font-size: 0.65rem;
+    color: rgba(255, 124, 42, 0.5);
+    background: rgba(255, 124, 42, 0.08);
+    border: 1px solid rgba(255, 124, 42, 0.2);
+    border-radius: 50px;
+    padding: 2px 8px;
+}
+
+/* ── Тело терминала ─────────────────────── */
+.t-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.t-output {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.2rem 1.5rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: rgba(245, 238, 235, 0.85);
+    scroll-behavior: smooth;
+}
+
+.t-output::-webkit-scrollbar { width: 4px; }
+.t-output::-webkit-scrollbar-track { background: transparent; }
+.t-output::-webkit-scrollbar-thumb { background: rgba(255, 124, 42, 0.3); border-radius: 4px; }
+
+/* ── ASCII-арт ──────────────────────────── */
+.t-ascii {
+    display: block;
+    font-size: 0.62rem;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #ff7c2a, #ff2d6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: pre;
+    margin-bottom: 0.5rem;
+}
+
+.t-welcome {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Строки вывода ──────────────────────── */
+.t-line {
+    margin: 0.15rem 0;
+    animation: tLineIn 0.15s ease-out both;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+@keyframes tLineIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.t-prompt-line {
+    margin: 0.5rem 0 0.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.t-prompt-sym {
+    color: #ff7c2a;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.t-prompt-cmd {
+    color: rgba(245, 238, 235, 0.9);
+    font-weight: 600;
+}
+
+/* ── Синтаксис ──────────────────────────── */
+.t-accent  { color: #ff7c2a; }
+.t-str     { color: #c3e88d; }
+.t-num     { color: #f78c6c; }
+.t-prop    { color: #80cbc4; }
+.t-kw      { color: #c792ea; }
+.t-cmd     { color: #ff7c2a; cursor: default; font-weight: 700; }
+.t-muted   { color: rgba(245, 238, 235, 0.4); }
+.t-comment { color: rgba(255, 124, 42, 0.5); }
+.t-error   { color: #ff5f57; }
+.t-tag     { 
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 2px;
+    background: rgba(255, 124, 42, 0.1);
+    border: 1px solid rgba(255, 124, 42, 0.25);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    color: #ffb347;
+}
+.t-green   { color: #28c840; }
+.t-bar     { color: #ff7c2a; letter-spacing: -1px; }
+.t-link    { 
+    color: #ff2d6b;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+.t-link:hover { color: #ff7c2a; }
+
+/* ── Строка ввода ───────────────────────── */
+.t-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.t-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: rgba(245, 238, 235, 0.9);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    caret-color: #ff7c2a;
+}
+
+.t-input::placeholder {
+    color: rgba(245, 238, 235, 0.2);
+}
+
+.t-cursor-hint {
+    font-size: 0.62rem;
+    color: rgba(255, 124, 42, 0.3);
+    background: rgba(255, 124, 42, 0.06);
+    border: 1px solid rgba(255, 124, 42, 0.15);
+    border-radius: 4px;
+    padding: 1px 5px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+/* ── Сканлайн эффект ────────────────────── */
+.t-body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ── Мобильная адаптация ────────────────── */
+@media (max-width: 600px) {
+    .t-window {
+        width: 100vw;
+        max-height: 85vh;
+        border-radius: 14px 14px 0 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        transform: translateY(100%);
+    }
+    .t-overlay.t-open .t-window {
+        transform: translateY(0);
+    }
+    .t-overlay {
+        align-items: flex-end;
+    }
+    .t-ascii { font-size: 0.45rem; }
+    .t-trigger-btn span { display: none; }
+    .t-trigger-btn { padding: 0.65rem; }
+}

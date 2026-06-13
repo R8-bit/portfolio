@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#080810" />
+  <title>BITER STUDIO — WebGL Creative Agency</title>
+  <meta name="description" content="BITER STUDIO — создаём цифровые впечатления нового уровня. WebGL, Three.js, интерактивные сайты с 3D-анимациями." />
+  <meta name="keywords" content="BITER, WebGL, Three.js, frontend, creative agency, 3D, digital studio" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ЛОАДЕР -->
+  <div id="loader" class="loader">
+    <div class="loader__inner">
+      <div class="loader__logo">BITER<span>.</span></div>
+      <div class="loader__bar"><span id="loaderFill" class="loader__fill"></span></div>
+      <div class="loader__pct" id="loaderPct">0%</div>
+      <div class="loader__sub">Loading WebGL experience...</div>
+    </div>
+  </div>
+
+  <!-- WebGL CANVAS -->
+  <canvas id="glCanvas" class="gl-canvas"></canvas>
+
+  <!-- АТМОСФЕРА -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- HUD РАМКИ -->
+  <div class="hud-corner hud-corner--tl" aria-hidden="true"></div>
+  <div class="hud-corner hud-corner--tr" aria-hidden="true"></div>
+  <div class="hud-corner hud-corner--bl" aria-hidden="true"></div>
+  <div class="hud-corner hud-corner--br" aria-hidden="true"></div>
+
+  <!-- НАВИГАЦИЯ -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav__logo">BITER<span class="nav__dot">.</span></a>
+    <nav class="nav__links">
+      <a href="#about" class="nav__link" data-text="Идея">Идея</a>
+      <a href="#services" class="nav__link" data-text="Услуги">Услуги</a>
+      <a href="#works" class="nav__link" data-text="Работы">Работы</a>
+      <a href="#contact" class="nav__link" data-text="Контакт">Контакт</a>
+    </nav>
+    <div class="nav__status">
+      <span class="nav__dot-live"></span>
+      <span id="navStatus">SYS · ONLINE</span>
+    </div>
+  </header>
+
+  <!-- ПРОГРЕСС СКРОЛЛА -->
+  <div class="scroll-rail" aria-hidden="true">
+    <div class="scroll-rail__fill" id="scrollFill"></div>
+  </div>
+
+  <!-- КОНТЕНТ -->
+  <main>
+
+    <!-- СЕКЦИЯ 1: HERO -->
+    <section id="hero" class="panel" data-scene="0">
+      <div class="panel__hold panel__hold--hero">
+        <div class="hero__kicker" data-reveal>BITER STUDIO · WebGL Creative Lab</div>
+        <h1 class="hero__title" data-reveal>
+          Создаём<br>
+          <span class="hero__accent">цифровые<br>миры</span>
+        </h1>
+        <p class="hero__lead" data-reveal>
+          Интерактивные 3D-интерфейсы, WebGL-анимации<br>
+          и сайты, которые невозможно забыть.
+        </p>
+        <div class="hero__cta" data-reveal>
+          <a href="#works" class="btn btn--primary">Смотреть работы</a>
+          <a href="#contact" class="btn btn--ghost">&gt;_ Написать нам</a>
+        </div>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <span>прокрутите вниз</span>
+        <i class="scroll-hint__arrow"></i>
+      </div>
+    </section>
+
+    <!-- СЕКЦИЯ 2: ИДЕЯ -->
+    <section id="about" class="panel" data-scene="1">
+      <div class="panel__hold">
+        <div class="panel__label" data-reveal>
+          <span class="panel__num">01</span> философия
+        </div>
+        <h2 class="panel__title" data-reveal>
+          Пиксель — это<br>наш кирпич
+        </h2>
+        <p class="panel__copy" data-reveal>
+          Каждый проект — это архитектура из тысяч решений. 
+          Мы строим цифровые пространства так же тщательно, 
+          как архитектор строит здание.
+        </p>
+        <p class="panel__copy" data-reveal>
+          WebGL даёт нам третье измерение. <em>Шейдеры</em> — язык света. 
+          А результат — <em>опыт</em>, который остаётся в памяти.
+        </p>
+        <div class="tech-stack" data-reveal>
+          <span class="tech-tag">Three.js</span>
+          <span class="tech-tag">GLSL</span>
+          <span class="tech-tag">WebGL 2.0</span>
+          <span class="tech-tag">GSAP</span>
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Node.js</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- СЕКЦИЯ 3: УСЛУГИ -->
+    <section id="services" class="panel" data-scene="2">
+      <div class="panel__hold">
+        <div class="panel__label" data-reveal>
+          <span class="panel__num">02</span> услуги
+        </div>
+        <h2 class="panel__title" data-reveal>Что мы создаём</h2>
+        <ul class="services-list" data-reveal>
+          <li class="service-item">
+            <div class="service-item__num">001</div>
+            <div class="service-item__body">
+              <h3>WebGL & 3D сайты</h3>
+              <p>Three.js сцены, интерактивные частицы, шейдерные эффекты — сайты из другого измерения.</p>
+            </div>
+          </li>
+          <li class="service-item">
+            <div class="service-item__num">002</div>
+            <div class="service-item__body">
+              <h3>Анимированные лендинги</h3>
+              <p>GSAP, ScrollTrigger, микроанимации — каждое взаимодействие продуманно и плавно.</p>
+            </div>
+          </li>
+          <li class="service-item">
+            <div class="service-item__num">003</div>
+            <div class="service-item__body">
+              <h3>Веб-приложения</h3>
+              <p>React, Node.js, базы данных — полноценные продукты с красивым интерфейсом.</p>
+            </div>
+          </li>
+          <li class="service-item">
+            <div class="service-item__num">004</div>
+            <div class="service-item__body">
+              <h3>Telegram-боты & автоматизация</h3>
+              <p>Боты для бизнеса, NFT-маркетплейсы, CRM-интеграции и парсеры данных.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- СЕКЦИЯ 4: РАБОТЫ -->
+    <section id="works" class="panel panel--dark" data-scene="3">
+      <div class="panel__hold panel__hold--center">
+        <div class="panel__label panel__label--center" data-reveal>
+          <span class="panel__num">03</span> работы
+        </div>
+        <h2 class="panel__title panel__title--center" data-reveal>
+          Проекты,<br>которые говорят сами
+        </h2>
+        <div class="works-grid" data-reveal>
+          <div class="work-card">
+            <div class="work-card__num">OPA 201</div>
+            <h3 class="work-card__title">Футбольная лига</h3>
+            <p class="work-card__desc">Canvas-анимации, HLS видеопотоки, динамичная навигация</p>
+            <div class="work-card__tags">
+              <span>HTML</span><span>CSS</span><span>GSAP</span>
+            </div>
+          </div>
+          <div class="work-card">
+            <div class="work-card__num">JUGGLER</div>
+            <h3 class="work-card__title">Task Manager</h3>
+            <p class="work-card__desc">Платформа управления задачами с Node.js-бэкендом</p>
+            <div class="work-card__tags">
+              <span>Node.js</span><span>Canvas</span><span>JS</span>
+            </div>
+          </div>
+          <div class="work-card">
+            <div class="work-card__num">MOODLE v2</div>
+            <h3 class="work-card__title">LMS Платформа</h3>
+            <p class="work-card__desc">Система управления обучением с HLS-видеолекциями</p>
+            <div class="work-card__tags">
+              <span>HTML</span><span>CSS</span><span>HLS.js</span>
+            </div>
+          </div>
+        </div>
+        <a href="../Портфолио/index.html" class="btn btn--primary btn--lg" data-reveal>
+          Смотреть все проекты →
+        </a>
+      </div>
+    </section>
+
+    <!-- СЕКЦИЯ 5: КОНТАКТ -->
+    <section id="contact" class="panel panel--contact" data-scene="4">
+      <div class="panel__hold panel__hold--center">
+        <div class="panel__label panel__label--center" data-reveal>
+          <span class="panel__num">04</span> контакт
+        </div>
+        <h2 class="panel__title panel__title--center" data-reveal>
+          Готов к<br>новым мирам?
+        </h2>
+        <p class="panel__copy panel__copy--center" data-reveal>
+          Напишите — обсудим вашу идею и создадим что-то невероятное.
+        </p>
+        <div class="contacts-block" data-reveal>
+          <a class="contact-link" href="https://t.me/biter" target="_blank" rel="noopener">
+            <span class="contact-link__key">Telegram</span>
+            <span class="contact-link__val">@biter</span>
+          </a>
+          <a class="contact-link" href="https://github.com/biter" target="_blank" rel="noopener">
+            <span class="contact-link__key">GitHub</span>
+            <span class="contact-link__val">@biter</span>
+          </a>
+        </div>
+        <a class="btn btn--terminal btn--lg" href="https://t.me/biter" target="_blank" rel="noopener" data-reveal>
+          <span class="btn__prompt">&gt;_</span> Начать проект
+        </a>
+        <footer class="panel__foot">
+          <span>BITER STUDIO<sup>©</sup></span>
+          <span>© 2026 · WebGL · Three.js · Creative Code</span>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

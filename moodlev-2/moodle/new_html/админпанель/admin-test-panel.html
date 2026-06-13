@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель тестирования</title>
+    <link rel="stylesheet" href="/moodle/new_html/админпанель/styleadmin.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Админ-панель тестирования</h1>
+            <p class="subtitle">Управление тестами для различных профессий</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Панель создания тестов -->
+            <div class="panel">
+                <h2>📝 Создание теста</h2>
+                <div id="successMessage" class="success-message">
+                    ✅ Тест успешно создан!
+                </div>
+                
+                <div class="form-group">
+                    <label for="testName">Название теста</label>
+                    <input type="text" id="testName" placeholder="Введите название теста">
+                </div>
+
+                <div class="form-group">
+                    <label>Профессии</label>
+                    <div class="checkbox-group" id="professionCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof1" value="Программист">
+                            <label for="prof1">Программист</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof2" value="Дизайнер">
+                            <label for="prof2">Дизайнер</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof3" value="Менеджер">
+                            <label for="prof3">Менеджер</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof4" value="Маркетолог">
+                            <label for="prof4">Маркетолог</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof5" value="Аналитик">
+                            <label for="prof5">Аналитик</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof6" value="Тестировщик">
+                            <label for="prof6">Веб</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Загрузка из файла</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div class="file-upload-icon">📁</div>
+                        <div class="file-upload-text">Перетащите текстовый файл сюда или кликните для выбора</div>
+                        <input type="file" id="fileInput" accept=".txt">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="testContent">Или введите вопросы вручную</label>
+                    <textarea id="testContent" placeholder="Формат:&#10;Вопрос 1?&#10;- Ответ 1&#10;+ Правильный ответ&#10;- Ответ 3&#10;&#10;Вопрос 2?&#10;- Ответ 1&#10;+ Правильный ответ"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="createTest()">Создать тест</button>
+                <button class="btn btn-secondary" onclick="clearForm()">Очистить</button>
+            </div>
+
+            <!-- Панель управления тестами -->
+            <div class="panel">
+                <h2>📚 Список тестов</h2>
+                
+                <div class="form-group">
+                    <label>Фильтр по профессии</label>
+                    <select id="professionFilter" onchange="filterTests()" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;">
+                        <option value="">Все профессии</option>
+                        <option value="Программист">Программист</option>
+                        <option value="Дизайнер">Дизайнер</option>
+                        <option value="Менеджер">Менеджер</option>
+                        <option value="Маркетолог">Маркетолог</option>
+                        <option value="Аналитик">Аналитик</option>
+                        <option value="Тестировщик">Вебкам</option>
+                    </select>
+                </div>
+
+                <div class="test-list" id="testList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Тесты пока не созданы</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalTests">0</div>
+                        <div class="stat-label">Всего тестов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalQuestions">0</div>
+                        <div class="stat-label">Всего вопросов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель отображения теста -->
+        <div class="panel">
+            <h2>👁️ Просмотр теста</h2>
+            <div class="test-display" id="testDisplay">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <p>Выберите тест для просмотра</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Хранилище тестов
+        let tests = [];
+        let currentTestId = null;
+
+        // Обработка перетаскивания файлов
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'text/plain') {
+                readFile(file);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                readFile(file);
+            }
+        });
+
+        function readFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('testContent').value = e.target.result;
+                fileUploadArea.innerHTML = `
+                    <div class="file-upload-icon">✅</div>
+                    <div class="file-upload-text">Файл загружен: ${file.name}</div>
+                    <input type="file" id="fileInput" accept=".txt">
+                `;
+                // Восстанавливаем обработчик после изменения HTML
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        readFile(file);
+                    }
+                });
+            };
+            reader.readAsText(file);
+        }
+
+        function parseTestContent(content) {
+            const lines = content.trim().split('\n');
+            const questions = [];
+            let currentQuestion = null;
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                if (line.endsWith('?')) {
+                    if (currentQuestion) {
+                        questions.push(currentQuestion);
+                    }
+                    currentQuestion = {
+                        question: line,
+                        answers: []
+                    };
+                } else if (line.startsWith('-') || line.startsWith('+')) {
+                    if (currentQuestion) {
+                        currentQuestion.answers.push({
+                            text: line.substring(1).trim(),
+                            correct: line.startsWith('+')
+                        });
+                    }
+                }
+            }
+
+            if (currentQuestion) {
+                questions.push(currentQuestion);
+            }
+
+            return questions;
+        }
+
+        function createTest() {
+            const testName = document.getElementById('testName').value;
+            const testContent = document.getElementById('testContent').value;
+            const selectedProfessions = Array.from(document.querySelectorAll('#professionCheckboxes input:checked'))
+                .map(cb => cb.value);
+
+            if (!testName) {
+                alert('Введите название теста');
+                return;
+            }
+
+            if (selectedProfessions.length === 0) {
+                alert('Выберите хотя бы одну профессию');
+                return;
+            }
+
+            if (!testContent) {
+                alert('Введите содержание теста');
+                return;
+            }
+
+            const questions = parseTestContent(testContent);
+            
+            if (questions.length === 0) {
+                alert('Не удалось распознать вопросы. Проверьте формат');
+                return;
+            }
+
+            const test = {
+                id: Date.now(),
+                name: testName,
+                professions: selectedProfessions,
+                questions: questions,
+                createdAt: new Date().toLocaleDateString('ru-RU')
+            };
+
+            tests.push(test);
+            updateTestList();
+            clearForm();
+            
+            // Показываем сообщение об успехе
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        function clearForm() {
+            document.getElementById('testName').value = '';
+            document.getElementById('testContent').value = '';
+            document.querySelectorAll('#professionCheckboxes input').forEach(cb => cb.checked = false);
+            fileUploadArea.innerHTML = `
+                <div class="file-upload-icon">📁</div>
+                <div class="file-upload-text">Перетащите текстовый файл сюда или кликните для выбора</div>
+                <input type="file" id="fileInput" accept=".txt">
+            `;
+            document.getElementById('fileInput').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    readFile(file);
+                }
+            });
+        }
+
+        function updateTestList() {
+            const testListEl = document.getElementById('testList');
+            const filter = document.getElementById('professionFilter').value;
+            
+            let filteredTests = tests;
+            if (filter) {
+                filteredTests = tests.filter(test => test.professions.includes(filter));
+            }
+
+            if (filteredTests.length === 0) {
+                testListEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Тесты не найдены</p>
+                    </div>
+                `;
+            } else {
+                testListEl.innerHTML = filteredTests.map(test => `
+                    <div class="test-item ${test.id === currentTestId ? 'active' : ''}" onclick="displayTest(${test.id})">
+                        <div class="test-title">${test.name}</div>
+                        <div class="test-meta">
+                            <div class="meta-item">📅 ${test.createdAt}</div>
+                            <div class="meta-item">❓ ${test.questions.length} вопросов</div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            ${test.professions.map(p => `<span class="badge">${p}</span>`).join(' ')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Обновляем статистику
+            document.getElementById('totalTests').textContent = tests.length;
+            document.getElementById('totalQuestions').textContent = tests.reduce((sum, test) => sum + test.questions.length, 0);
+        }
+
+        function filterTests() {
+            updateTestList();
+        }
+
+        function displayTest(testId) {
+            currentTestId = testId;
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+
+            const displayEl = document.getElementById('testDisplay');
+            displayEl.innerHTML = `
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 1.5em;">${test.name}</h3>
+                <div style="margin-bottom: 20px;">
+                    ${test.professions.map(p => `<span class="badge">${p}</span>`).join(' ')}
+                </div>
+                ${test.questions.map((q, i) => `
+                    <div class="question-block">
+                        <div class="question-title">Вопрос ${i + 1}: ${q.question}</div>
+                        ${q.answers.map(a => `
+                            <div class="answer-option ${a.correct ? 'correct' : ''}">
+                                ${a.correct ? '✅' : '⭕'} ${a.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('')}
+            `;
+
+            updateTestList();
+        }
+
+        // Инициализация с примером теста
+        tests.push({
+            id: 1,
+            name: 'Основы JavaScript',
+            professions: ['Программист', 'Тестировщик'],
+            questions: [
+                {
+                    question: 'Что такое JavaScript?',
+                    answers: [
+                        { text: 'Язык программирования', correct: true },
+                        { text: 'База данных', correct: false },
+                        { text: 'Операционная система', correct: false }
+                    ]
+                },
+                {
+                    question: 'Какой метод используется для вывода в консоль?',
+                    answers: [
+                        { text: 'print()', correct: false },
+                        { text: 'console.log()', correct: true },
+                        { text: 'echo()', correct: false }
+                    ]
+                }
+            ],
+            createdAt: new Date().toLocaleDateString('ru-RU')
+        });
+
+        updateTestList();
+    </script>
+</body>
+</html>

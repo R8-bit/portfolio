@@ -1,0 +1,292 @@
+// Навигация для JUGGLER
+
+// Навигация для JUGGLER
+
+#header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10000; // Force high z-index
+	background: rgba(10, 10, 10, 0.95);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid $border-color;
+	transition: all $transition-base;
+
+	&.scrolled {
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+	}
+
+	.header-content {
+		display: flex;
+		justify-content: center; // Центрируем всё на десктопе
+		align-items: center;
+		padding: 20px 0;
+		position: relative;
+
+		@media (max-width: $breakpoint-tablet) {
+			justify-content: space-between; // На мобильном и планшете разносим лого и бургер
+		}
+	}
+
+	// Логотип для мобильных (слева)
+	.logo {
+		font-family: $font-display;
+		font-size: 24px;
+		letter-spacing: 3px;
+		color: $accent-red;
+		cursor: pointer;
+		transition: all $transition-base;
+		display: none; // Скрыт на ПК
+
+		@media (max-width: $breakpoint-tablet) {
+			display: block; // Виден на планшете и ниже
+		}
+	}
+
+	// Логотип внутри меню (для ПК)
+	.nav-logo {
+		font-family: $font-display;
+		font-size: 32px;
+		letter-spacing: 3px;
+		color: $accent-red;
+		cursor: pointer;
+		transition: all $transition-base;
+		margin-right: 10px; // Небольшой отступ
+
+		&:hover {
+			text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+		}
+
+		@media (max-width: $breakpoint-tablet) {
+			display: none; // Скрываем внутри меню на планшете
+		}
+	}
+
+	.nav {
+		display: flex;
+		gap: 30px;
+		align-items: center;
+
+		@media (max-width: $breakpoint-tablet) {
+			display: flex; // Явно указываем
+			position: fixed;
+			top: 0;
+			right: -100%; // Полностью скрываем за экраном
+			width: 50%; // Занимает 50% экрана
+			min-width: 200px; // Минимальная ширина для читаемости
+			max-width: 300px; // Максимум 300px на больших планшетах
+			height: 100vh;
+			background: $bg-darker;
+			flex-direction: column;
+			justify-content: center;
+			gap: 40px;
+			transition: right 0.4s ease;
+			box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+			z-index: $z-header + 2; // Поверх всего
+			padding: 0 15px; // Добавляем отступы по бокам
+
+			&.active {
+				right: 0 !important;
+				visibility: visible;
+			}
+		}
+	}
+
+	.nav-link {
+		color: $text-gray;
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		transition: color $transition-base;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: -5px;
+			left: 0;
+			width: 0;
+			height: 2px;
+			background: $accent-red;
+			transition: width $transition-base;
+		}
+
+		&:hover,
+		&.active {
+			color: $text-white;
+		}
+
+		&:hover::after,
+		&.active::after {
+			width: 100%;
+		}
+
+		@media (max-width: $breakpoint-tablet) {
+			font-size: 18px; // Уменьшен размер для узкого меню
+			text-align: center; // Центрируем текст
+			white-space: nowrap; // Запрещаем перенос
+			overflow: visible; // Показываем подчёркивание
+			text-overflow: ellipsis; // Добавляем троеточие если не влезает
+			max-width: 100%; // Ограничиваем ширину
+			padding-bottom: 8px; // Отступ для подчёркивания
+
+			// Подчёркивание для мобильного меню
+			&::after {
+				bottom: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 0; // Скрываем по умолчанию
+			}
+
+			// Показываем только для активной страницы
+			&.active::after {
+				width: 80%; // Подчёркивание для активной страницы
+			}
+
+			// При наведении показываем тонкое подчёркивание
+			&:hover::after {
+				width: 40%;
+				opacity: 0.5;
+			}
+
+			// Активная страница при наведении
+			&.active:hover::after {
+				width: 80%;
+				opacity: 1;
+			}
+		}
+
+		// Еще меньше на очень маленьких экранах
+		@media (max-width: $breakpoint-mobile) {
+			font-size: 16px;
+		}
+	}
+
+	// Кнопка смены языка
+	.language-switcher {
+		padding: 8px 16px;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid $border-color;
+		border-radius: 20px;
+		color: $text-white;
+		font-size: 12px;
+		letter-spacing: 1px;
+		transition: all $transition-base;
+		cursor: pointer;
+
+		&:hover {
+			background: rgba(255, 0, 0, 0.1);
+			border-color: $accent-red;
+		}
+
+		@media (max-width: $breakpoint-tablet) {
+			position: absolute;
+			top: 30px;
+			left: 30px;
+		}
+	}
+
+	// Бургер меню
+	.menu-toggle {
+		display: none;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 6px;
+		width: 50px;
+		height: 50px;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid $border-color;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: all $transition-base;
+		z-index: $z-header + 3; // Самый верхний, чтобы нажимался
+
+		// Показываем на ВСЕХ экранах <= 1024px (включая < 480px)
+		@media (max-width: $breakpoint-tablet) {
+			display: flex !important;
+		}
+
+		// Уменьшаем на маленьких экранах
+		@media (max-width: $breakpoint-mobile) {
+			width: 40px;
+			height: 40px;
+			gap: 5px;
+		}
+
+		&:hover {
+			background: rgba(255, 0, 0, 0.1);
+			border-color: $accent-red;
+			transform: scale(1.05);
+		}
+
+		&.active {
+			background: $accent-red; // Подсветка активного бургера
+			border-color: $accent-red;
+
+			span {
+				background: white; // Белые полоски на красном фоне
+				&:nth-child(1) {
+					transform: translateY(8px) rotate(45deg);
+				}
+
+				&:nth-child(2) {
+					opacity: 0;
+				}
+
+				&:nth-child(3) {
+					transform: translateY(-8px) rotate(-45deg);
+				}
+			}
+
+			// Корректировка для маленьких экранов
+			@media (max-width: $breakpoint-mobile) {
+				span {
+					&:nth-child(1) {
+						transform: translateY(7px) rotate(45deg);
+					}
+
+					&:nth-child(3) {
+						transform: translateY(-7px) rotate(-45deg);
+					}
+				}
+			}
+		}
+
+		span {
+			display: block;
+			width: 24px;
+			height: 2px;
+			background: $text-white;
+			border-radius: 2px;
+			transition: all $transition-base;
+
+			// Уменьшаем полоски на маленьких экранах
+			@media (max-width: $breakpoint-mobile) {
+				width: 20px;
+			}
+		}
+	}
+}
+
+// Overlay для мобильного меню
+.nav-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: $z-header - 1;
+	opacity: 0;
+	transition: opacity $transition-base;
+
+	@media (max-width: $breakpoint-tablet) {
+		&.active {
+			display: block;
+			opacity: 1;
+		}
+	}
+}

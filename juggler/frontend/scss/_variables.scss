@@ -1,0 +1,43 @@
+// SCSS Variables для JUGGLER
+
+// Цветовая палитра
+$bg-black: #0a0a0a;
+$bg-dark: #1a1a1a;
+$bg-darker: #0f0f0f;
+$accent-red: #ff0000;
+$accent-gold: #ffcc00;
+$text-white: #ffffff;
+$text-gray: #a0a0a0;
+$border-color: #333;
+
+// Градиенты
+$gradient-primary: linear-gradient(
+	135deg,
+	#667eea 0%,
+	#764ba2 50%,
+	#ff0000 100%
+);
+$gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+
+// Типография
+$font-primary: 'Montserrat', sans-serif;
+$font-display: 'Bebas Neue', sans-serif;
+
+// Размеры
+$max-width: 1400px;
+$header-height: 80px;
+
+// Breakpoints для адаптации
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1025px;
+
+// Transitions
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Z-index слои
+$z-loader: 9999;
+$z-header: 1000;
+$z-modal: 2000;
+$z-dropdown: 100;

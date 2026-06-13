@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Админ-панель - JUGGLER</title>
+		<link rel="stylesheet" href="css/admin.css" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			rel="icon"
+			href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎪</text></svg>"
+		/>
+		<script src="js/auth.js"></script>
+		<script>
+			// Check authentication before loading page
+			checkAuth()
+		</script>
+	</head>
+	<body>
+		<button class="burger-btn" onclick="toggleSidebar()">☰</button>
+		<div class="admin-container">
+			<aside class="sidebar">
+				<div class="sidebar-header">
+					<h1>JUGGLER<span> ADMIN</span></h1>
+				</div>
+				<nav class="sidebar-nav">
+					<a href="#" class="nav-item active" data-section="dashboard">
+						<span class="icon">📊</span>
+						<span class="text">Дашборд</span>
+					</a>
+					<a href="#" class="nav-item" data-section="videos">
+						<span class="icon">🎥</span>
+						<span class="text">Видео</span>
+					</a>
+					<a href="#" class="nav-item" data-section="photos">
+						<span class="icon">📸</span>
+						<span class="text">Фотогалерея</span>
+					</a>
+
+					<a href="#" class="nav-item" data-section="social">
+						<span class="icon">🌐</span>
+						<span class="text">Соцсети</span>
+					</a>
+					<a href="#" class="nav-item" data-section="tickets">
+						<span class="icon">🎫</span>
+						<span class="text">Билеты</span>
+					</a>
+
+					<a href="#" class="nav-item" data-section="contactforms">
+						<span class="icon">✉️</span>
+						<span class="text">Заявки</span>
+					</a>
+
+					<a href="#" class="nav-item" data-section="stats">
+						<span class="icon">📈</span>
+						<span class="text">Статистика</span>
+					</a>
+					<a href="#" class="nav-item" data-section="backup">
+						<span class="icon">💾</span>
+						<span class="text">Бэкап</span>
+					</a>
+				</nav>
+				<div class="sidebar-footer">
+					<a href="index.html" class="back-btn">← Вернуться на сайт</a>
+				</div>
+			</aside>
+
+			<main class="main-content">
+				<header class="top-bar">
+					<h2 id="pageTitle">Панель управления</h2>
+					<div class="user-info">
+						<span>Администратор</span>
+						<div class="avatar">👤</div>
+						<button
+							onclick="logout()"
+							class="btn-icon"
+							style="margin-left: 15px; color: #ff4444"
+							title="Выйти"
+						>
+							🚪
+						</button>
+					</div>
+				</header>
+
+				<!-- Dashboard Section -->
+				<section id="dashboard" class="content-section active">
+					<div class="welcome-card">
+						<h3>Добро пожаловать в панель управления!</h3>
+						<p>Здесь вы можете управлять всем контентом сайта JUGGLER.</p>
+					</div>
+
+					<div class="dashboard-widgets">
+						<!-- Stats Widget -->
+						<div id="stats-widget" class="dashboard-widget">
+							<div class="section-header">
+								<h3>Статистика сайта</h3>
+							</div>
+							<div class="stats-grid compact">
+								<div class="stat-card">
+									<div class="stat-icon">📅</div>
+									<div class="stat-info">
+										<h3>Сегодня</h3>
+										<p class="stat-number" id="statsToday">0</p>
+									</div>
+								</div>
+								<div class="stat-card">
+									<div class="stat-icon">📊</div>
+									<div class="stat-info">
+										<h3>Всего</h3>
+										<p class="stat-number" id="statsTotal">0</p>
+									</div>
+								</div>
+							</div>
+							<div style="margin-top: 15px; text-align: center">
+								<button class="btn btn-danger btn-sm" onclick="resetStats()">
+									⚠️ Сбросить
+								</button>
+							</div>
+						</div>
+
+						<!-- Social Widget -->
+						<div id="social-widget" class="dashboard-widget">
+							<div class="section-header">
+								<h3>Социальные сети</h3>
+								<button class="btn btn-primary btn-sm" onclick="showAddSocialForm()">
+									+
+								</button>
+							</div>
+							<div id="addSocialForm" class="content-grid" style="display: none; margin-bottom: 20px;">
+								<div class="content-card">
+									<h4>Добавить/Редактировать</h4>
+									<form onsubmit="saveSocialLink(event)">
+										<input type="hidden" id="socialId" />
+										<div class="form-group">
+											<label>Название</label>
+											<input type="text" id="socialName" required placeholder="Instagram" />
+										</div>
+										<div class="form-group">
+											<label>URL</label>
+											<input type="url" id="socialUrl" required placeholder="https://..." />
+										</div>
+										<div class="form-group">
+											<label>Порядок</label>
+											<input type="number" id="socialOrder" value="0" />
+										</div>
+										<div class="form-group">
+											<label><input type="checkbox" id="socialActive" checked /> Активна</label>
+										</div>
+										<div class="form-actions">
+											<button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+											<button type="button" class="btn btn-secondary btn-sm" onclick="hideAddSocialForm()">Отмена</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="social-grid" id="socialLinksGrid">
+								<!-- Loaded via JS -->
+							</div>
+						</div>
+
+						<!-- Tickets Widget -->
+						<div id="tickets-widget" class="dashboard-widget">
+							<div class="section-header">
+								<h3>Билеты</h3>
+							</div>
+							<div class="content-card">
+								<form onsubmit="saveTicketLink(event)">
+									<div class="form-group">
+										<label>Ссылка</label>
+										<input type="url" id="ticketUrl" placeholder="https://afisha..." />
+									</div>
+									<div class="form-group">
+										<label>Кнопка</label>
+										<input type="text" id="ticketLabel" value="Купить билеты" />
+									</div>
+									<div class="form-group">
+										<label><input type="checkbox" id="ticketActive" checked /> Активна</label>
+									</div>
+									<button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+								</form>
+							</div>
+						</div>
+
+						<!-- Markup for Request/Contact Forms Widget -->
+						<div id="requests-widget" class="dashboard-widget large">
+							<div class="section-header">
+								<h3>Заявки "Связь с нами"</h3>
+							</div>
+							<div class="contact-grid" id="contactFormsGrid">
+								<!-- Loaded via JS -->
+							</div>
+						</div>
+
+						<!-- Backup Widget -->
+						<div id="backup-widget" class="dashboard-widget">
+							<div class="section-header">
+								<h3>Бэкап</h3>
+							</div>
+							<div class="content-card" style="text-align:center;">
+								<p style="margin-bottom:15px; font-size:13px; color:#aaa;">Скачать базу данных juggler.sqlite</p>
+								<button class="btn btn-primary" onclick="downloadBackup()">
+									💾 Скачать
+								</button>
+							</div>
+						</div>
+
+					</div>
+				</section>
+
+				<!-- Videos Section -->
+				<section id="videos" class="content-section">
+					<div class="section-header">
+						<h3>Управление видео</h3>
+						<div class="timer-control">
+							<span class="timer-icon">⏱</span>
+							<span class="timer-label">Слайд:</span>
+							<input
+								type="number"
+								id="videoSlideDuration"
+								value="5"
+								min="1"
+								onchange="saveDurationSetting('video', this.value)"
+							/>
+							<span class="timer-unit">сек</span>
+						</div>
+						<button class="btn btn-primary" onclick="showAddVideoForm()">
+							+ Добавить видео
+						</button>
+					</div>
+
+					<div id="addVideoForm" class="form-container" style="display: none">
+						<h4>Добавить/Редактировать видео</h4>
+						<form onsubmit="saveVideo(event)">
+							<input type="hidden" id="videoId" />
+							<div class="form-group">
+								<label>Категория</label>
+								<select id="videoCategory">
+									<option value="video_page">Страница Видео</option>
+									<option value="gallery">Галерея</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Название</label>
+								<input
+									type="text"
+									id="videoTitle"
+									required
+									placeholder="Название видео"
+								/>
+							</div>
+							<div class="form-group">
+								<label>Описание</label>
+								<textarea
+									id="videoDescription"
+									placeholder="Описание видео"
+								></textarea>
+							</div>
+							<div class="form-group">
+								<label>Длительность (мин:сек)</label>
+								<div style="display: flex; gap: 10px; align-items: center">
+									<select id="videoDurationMin" style="width: 80px">
+										<option value="0">0</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+									<span>:</span>
+									<select id="videoDurationSec" style="width: 80px">
+										<option value="00">00</option>
+										<option value="15">15</option>
+										<option value="30">30</option>
+										<option value="45">45</option>
+									</select>
+									<input type="hidden" id="videoDuration" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Файл видео (или URL)</label>
+								<input type="file" id="videoFile" accept="video/*" />
+								<input
+									type="text"
+									id="videoUrl"
+									placeholder="Или ссылка на видео"
+								/>
+								<small>Если выбран файл, URL будет проигнорирован.</small>
+							</div>
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">Сохранить</button>
+								<button
+									type="button"
+									class="btn btn-secondary"
+									onclick="hideAddVideoForm()"
+								>
+									Отмена
+								</button>
+							</div>
+						</form>
+					</div>
+
+					<div class="videos-grid" id="videosGrid">
+						<!-- Videos will be loaded here as cards -->
+					</div>
+				</section>
+
+				<!-- Photos Section -->
+				<section id="photos" class="content-section">
+					<div class="section-header">
+						<h3>Управление фотогалереей</h3>
+						<div class="timer-control">
+							<span class="timer-icon">⏱</span>
+							<span class="timer-label">Слайд:</span>
+							<input
+								type="number"
+								id="photoSlideDuration"
+								value="5"
+								min="1"
+								onchange="saveDurationSetting('photo', this.value)"
+							/>
+							<span class="timer-unit">сек</span>
+						</div>
+						<button class="btn btn-primary" onclick="showAddPhotoForm()">
+							+ Добавить фото
+						</button>
+					</div>
+
+					<div id="addPhotoForm" class="form-container" style="display: none">
+						<h4>Добавить фото</h4>
+						<form onsubmit="savePhoto(event)">
+							<input type="hidden" id="photoId" />
+							<!-- Title and Description removed -->
+							<div class="form-group">
+								<label>Изображение</label>
+								<input type="file" id="photoFile" accept="image/*" />
+							</div>
+							<div class="form-actions">
+								<button type="submit" class="btn btn-primary">Сохранить</button>
+								<button
+									type="button"
+									class="btn btn-secondary"
+									onclick="hideAddPhotoForm()"
+								>
+									Отмена
+								</button>
+							</div>
+						</form>
+					</div>
+
+					<div class="photos-grid" id="photosGrid">
+						<!-- Photos will be loaded here -->
+					</div>
+				</section>
+
+
+							</button>
+						</form>
+					</div>
+				</section>
+
+
+
+				<!-- Ticket Link Section REMOVED (Moved to Dashboard) -->
+
+				<!-- Social Links Section REMOVED (Moved to Dashboard) -->
+
+				<!-- Contact Forms Section REMOVED (Moved to Dashboard) -->
+
+				<!-- Stats Section REMOVED (Moved to Dashboard) -->
+
+				<!-- Backup Section REMOVED (Moved to Dashboard) -->
+			</main>
+		</div>
+
+		<!-- View Contact Modal -->
+		<div id="viewContactModal" class="custom-modal-overlay">
+			<div class="custom-modal" style="width: 90%; max-width: 600px;">
+				<h3>Детали заявки</h3>
+				<div id="contactDetailsContent" style="margin-bottom: 25px;">
+					<!-- Content injected via JS -->
+				</div>
+				<div class="custom-modal-actions">
+					<button class="btn btn-secondary" onclick="closeViewContactModal()">Закрыть</button>
+					<div id="contactModalActions" style="display:flex; gap:10px;">
+						<!-- Actions injected via JS -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Notification Container -->
+		<div id="notification-container" class="notification-container"></div>
+
+		<!-- Custom Confirm Modal -->
+		<div id="confirmModal" class="custom-modal-overlay">
+			<div class="custom-modal">
+				<h3 id="confirmTitle">Подтверждение</h3>
+				<p id="confirmMessage">Вы уверены?</p>
+				<div class="custom-modal-actions">
+					<button class="btn btn-secondary" onclick="closeConfirmModal(false)">
+						Отмена
+					</button>
+					<button class="btn btn-primary" onclick="closeConfirmModal(true)">
+						Да, удалить
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Crop Modal -->
+		<div id="cropModal" class="custom-modal-overlay">
+			<div class="custom-modal" style="width: 90%; max-width: 800px">
+				<h3>Кадрирование изображения</h3>
+				<div
+					class="img-container"
+					style="max-height: 80vh; margin-bottom: 20px"
+				>
+					<img id="imageToCrop" src="" style="max-width: 100%; max-height: 100%; display: block;" />
+				</div>
+				<div class="custom-modal-actions">
+					<button class="btn btn-secondary" onclick="closeCropModal()">
+						Отмена
+					</button>
+					<button class="btn btn-primary" onclick="saveCrop()">Обрезать</button>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+		<!-- auth.js уже загружен в head -->
+		<script src="js/admin.js"></script>
+		<script>
+			// Check authentication on page load
+			checkAuth()
+		</script>
+	</body>
+</html>

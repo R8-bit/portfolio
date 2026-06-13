@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель тестирования</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .panel h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .file-upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .file-upload-area:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+
+        .file-upload-area.dragover {
+            background: #e8ebff;
+            border-color: #667eea;
+        }
+
+        .file-upload-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-text {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .file-upload-area input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            margin-left: 10px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .test-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .test-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .test-item:hover {
+            background: #e8ebff;
+            transform: translateX(5px);
+        }
+
+        .test-item.active {
+            border-color: #667eea;
+            background: #e8ebff;
+        }
+
+        .test-title {
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .test-meta {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .test-display {
+            min-height: 300px;
+        }
+
+        .question-block {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .answer-option {
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .answer-option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ⬇️ ТОЧКА ВСТАВКИ: Стили для кнопки отправки в списке тестов */
+        .test-item-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Админ-панель тестирования</h1>
+            <p class="subtitle">Управление тестами для различных профессий</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Панель создания тестов -->
+            <div class="panel">
+                <h2>📝 Создание теста</h2>
+                <div id="successMessage" class="success-message">
+                    ✅ Тест успешно создан!
+                </div>
+                
+                <div class="form-group">
+                    <label for="testName">Название теста</label>
+                    <input type="text" id="testName" placeholder="Введите название теста">
+                </div>
+
+                <div class="form-group">
+                    <label>Профессии</label>
+                    <div class="checkbox-group" id="professionCheckboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof1" value="Программист">
+                            <label for="prof1">Программист</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof2" value="Дизайнер">
+                            <label for="prof2">Дизайнер</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof3" value="Менеджер">
+                            <label for="prof3">Менеджер</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof4" value="Маркетолог">
+                            <label for="prof4">Маркетолог</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof5" value="Аналитик">
+                            <label for="prof5">Аналитик</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="prof6" value="Веб">
+                            <label for="prof6">Веб</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Загрузка из файла</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div class="file-upload-icon">📁</div>
+                        <div class="file-upload-text">Перетащите текстовый файл сюда или кликните для выбора</div>
+                        <input type="file" id="fileInput" accept=".txt">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="testContent">Или введите вопросы вручную</label>
+                    <textarea id="testContent" placeholder="Формат:&#10;Вопрос 1?&#10;- Ответ 1&#10;+ Правильный ответ&#10;- Ответ 3&#10;&#10;Вопрос 2?&#10;- Ответ 1&#10;+ Правильный ответ"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="createTest()">Создать тест</button>
+                <button class="btn btn-secondary" onclick="clearForm()">Очистить</button>
+            </div>
+
+            <!-- Панель управления тестами -->
+            <div class="panel">
+                <h2>📚 Список тестов</h2>
+                
+                <div class="form-group">
+                    <label>Фильтр по профессии</label>
+                    <select id="professionFilter" onchange="filterTests()">
+                        <option value="">Все профессии</option>
+                        <option value="Программист">Программист</option>
+                        <option value="Дизайнер">Дизайнер</option>
+                        <option value="Менеджер">Менеджер</option>
+                        <option value="Маркетолог">Маркетолог</option>
+                        <option value="Аналитик">Аналитик</option>
+                        <option value="Веб">Веб</option>
+                    </select>
+                </div>
+
+                <div class="test-list" id="testList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Тесты пока не созданы</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalTests">0</div>
+                        <div class="stat-label">Всего тестов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalQuestions">0</div>
+                        <div class="stat-label">Всего вопросов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Панель отображения теста -->
+        <div class="panel">
+            <h2>👁️ Просмотр теста</h2>
+            <div class="test-display" id="testDisplay">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <p>Выберите тест для просмотра</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tests = [];
+        let currentTestId = null;
+
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'text/plain') {
+                readFile(file);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                readFile(file);
+            }
+        });
+
+        function readFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('testContent').value = e.target.result;
+                fileUploadArea.innerHTML = `
+                    <div class="file-upload-icon">✅</div>
+                    <div class="file-upload-text">Файл загружен: ${file.name}</div>
+                    <input type="file" id="fileInput" accept=".txt">
+                `;
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        readFile(file);
+                    }
+                });
+            };
+            reader.readAsText(file);
+        }
+
+        function parseTestContent(content) {
+            const lines = content.trim().split('\n');
+            const questions = [];
+            let currentQuestion = null;
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                if (line.endsWith('?')) {
+                    if (currentQuestion) {
+                        questions.push(currentQuestion);
+                    }
+                    currentQuestion = {
+                        question: line,
+                        answers: []
+                    };
+                } else if (line.startsWith('-') || line.startsWith('+')) {
+                    if (currentQuestion) {
+                        currentQuestion.answers.push({
+                            text: line.substring(1).trim(),
+                            correct: line.startsWith('+')
+                        });
+                    }
+                }
+            }
+
+            if (currentQuestion) {
+                questions.push(currentQuestion);
+            }
+
+            return questions;
+        }
+
+        function createTest() {
+            const testName = document.getElementById('testName').value;
+            const testContent = document.getElementById('testContent').value;
+            const selectedProfessions = Array.from(document.querySelectorAll('#professionCheckboxes input:checked'))
+                .map(cb => cb.value);
+
+            if (!testName) {
+                alert('Введите название теста');
+                return;
+            }
+
+            if (selectedProfessions.length === 0) {
+                alert('Выберите хотя бы одну профессию');
+                return;
+            }
+
+            if (!testContent) {
+                alert('Введите содержание теста');
+                return;
+            }
+
+            const questions = parseTestContent(testContent);
+            
+            if (questions.length === 0) {
+                alert('Не удалось распознать вопросы. Проверьте формат');
+                return;
+            }
+
+            const test = {
+                id: Date.now(),
+                name: testName,
+                professions: selectedProfessions,
+                questions: questions,
+                createdAt: new Date().toLocaleDateString('ru-RU')
+            };
+
+            tests.push(test);
+            updateTestList();
+            clearForm();
+            
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        function clearForm() {
+            document.getElementById('testName').value = '';
+            document.getElementById('testContent').value = '';
+            document.querySelectorAll('#professionCheckboxes input').forEach(cb => cb.checked = false);
+            fileUploadArea.innerHTML = `
+                <div class="file-upload-icon">📁</div>
+                <div class="file-upload-text">Перетащите текстовый файл сюда или кликните для выбора</div>
+                <input type="file" id="fileInput" accept=".txt">
+            `;
+            document.getElementById('fileInput').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    readFile(file);
+                }
+            });
+        }
+
+        // ⬇️ ТОЧКА ВСТАВКИ: Функция отправки теста на сайт
+        function sendTestToSite(testId) {
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+
+            // TODO: Здесь вставьте URL вашего API для отправки теста
+            const apiUrl = 'http://127.0.0.1:5500/moodle/new_html/tests.html'; // ← ИЗМЕНИТЕ НА ВАШ URL
+            
+            // Отправка данных теста
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(test)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`✅ Тест "${test.name}" успешно отправлен на сайт!`);
+                console.log('Ответ сервера:', data);
+            })
+            .catch(error => {
+                alert('❌ Ошибка при отправке теста: ' + error.message);
+                console.error('Ошибка:', error);
+            });
+        }
+
+        function updateTestList() {
+            const testListEl = document.getElementById('testList');
+            const filter = document.getElementById('professionFilter').value;
+            
+            let filteredTests = tests;
+            if (filter) {
+                filteredTests = tests.filter(test => test.professions.includes(filter));
+            }
+
+            if (filteredTests.length === 0) {
+                testListEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Тесты не найдены</p>
+                    </div>
+                `;
+            } else {
+                // ⬇️ ТОЧКА ВСТАВКИ: Добавлена кнопка отправки в каждый тест
+                testListEl.innerHTML = filteredTests.map(test => `
+                    <div class="test-item ${test.id === currentTestId ? 'active' : ''}" onclick="displayTest(${test.id})">
+                        <div class="test-title">${test.name}</div>
+                        <div class="test-meta">
+                            <div class="meta-item">📅 ${test.createdAt}</div>
+                            <div class="meta-item">❓ ${test.questions.length} вопросов</div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            ${test.professions.map(p => `<span class="badge">${p}</span>`).join(' ')}
+                        </div>
+                        <div class="test-item-actions">
+                            <button class="btn btn-send" onclick="event.stopPropagation(); sendTestToSite(${test.id})">
+                                📤 Отправить на сайт
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('totalTests').textContent = tests.length;
+            document.getElementById('totalQuestions').textContent = tests.reduce((sum, test) => sum + test.questions.length, 0);
+        }
+
+        function filterTests() {
+            updateTestList();
+        }
+
+        function displayTest(testId) {
+            currentTestId = testId;
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+
+            const displayEl = document.getElementById('testDisplay');
+            displayEl.innerHTML = `
+                <h3 style="color: #333; margin-bottom: 20px; font-size: 1.5em;">${test.name}</h3>
+                <div style="margin-bottom: 20px;">
+                    ${test.professions.map(p => `<span class="badge">${p}</span>`).join(' ')}
+                </div>
+                ${test.questions.map((q, i) => `
+                    <div class="question-block">
+                        <div class="question-title">Вопрос ${i + 1}: ${q.question}</div>
+                        ${q.answers.map(a => `
+                            <div class="answer-option ${a.correct ? 'correct' : ''}">
+                                ${a.correct ? '✅' : '⭕'} ${a.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                `).join('')}
+            `;
+
+            updateTestList();
+        }
+
+        tests.push({
+            id: 1,
+            name: 'Основы JavaScript',
+            professions: ['Программист', 'Веб'],
+            questions: [
+                {
+                    question: 'Что такое JavaScript?',
+                    answers: [
+                        { text: 'Язык программирования', correct: true },
+                        { text: 'База данных', correct: false },
+                        { text: 'Операционная система', correct: false }
+                    ]
+                },
+                {
+                    question: 'Какой метод используется для вывода в консоль?',
+                    answers: [
+                        { text: 'print()', correct: false },
+                        { text: 'console.log()', correct: true },
+                        { text: 'echo()', correct: false }
+                    ]
+                }
+            ],
+            createdAt: new Date().toLocaleDateString('ru-RU')
+        });
+
+        updateTestList();
+    </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+// Main SCSS файл для JUGGLER
+// Импортирует все компоненты
+
+@import 'variables';
+@import 'mixins';
+@import 'animations';
+@import 'loader';
+@import 'navigation';
+// Footer для JUGGLER (Inlined to fix import issue)
+
+.footer {
+	background: rgba(10, 10, 10, 0.95);
+	border-top: 1px solid $border-color;
+	padding: 60px 0 30px;
+
+	.footer-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 30px;
+		margin-bottom: 40px;
+	}
+
+	.footer-about {
+		max-width: 600px; // Ограничим ширину текста
+
+		h3 {
+			color: $accent-red;
+			margin-bottom: 20px;
+			font-size: 24px; // Чуть крупнее заголовок
+			letter-spacing: 1px;
+		}
+
+		p {
+			color: $text-gray;
+			line-height: 1.8;
+			font-size: 14px;
+		}
+	}
+
+	.footer-logo {
+		font-family: $font-display;
+		font-size: 32px;
+		letter-spacing: 3px;
+		color: $accent-red;
+		cursor: pointer;
+		transition: all $transition-base;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+		text-decoration: none;
+
+		&:hover {
+			text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+		}
+	}
+
+	.footer-links {
+		width: 100%; // Чтобы занимал ширину для центрирования
+
+		h4 {
+			color: $accent-red;
+			margin-bottom: 20px;
+			font-size: 18px;
+			letter-spacing: 1px;
+			display: none; // Скроем заголовок "Разделы", так как меню горизонтальное и очевидное
+		}
+
+		ul {
+			@include flex-center;
+			gap: 30px;
+			flex-wrap: wrap; // На мобильных может перенестись
+
+			li {
+				margin-bottom: 0;
+
+				a {
+					color: $text-gray;
+					font-size: 16px; // Чуть крупнее для кликабельности
+					text-transform: uppercase; // Стильнее для горизонтального меню
+					letter-spacing: 1px;
+					transition: color $transition-base;
+					position: relative;
+
+					&:hover {
+						color: $accent-red; // Красный при наведении
+
+						// Подчеркивание при наведении?
+						&::after {
+							content: '';
+							position: absolute;
+							bottom: -5px;
+							left: 0;
+							width: 100%;
+							height: 2px;
+							background: $accent-red;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Социальные сети
+	.social-container {
+		margin: 40px 0;
+		text-align: center;
+
+		.social-title {
+			color: $accent-red;
+			margin-bottom: 20px;
+			font-size: 18px;
+			letter-spacing: 1px;
+		}
+
+		.social-links {
+			@include flex-center;
+			gap: 15px;
+			flex-wrap: wrap;
+
+			a {
+				width: 50px;
+				height: 50px;
+				@include flex-center;
+				transition:
+					transform $transition-base,
+					filter $transition-base;
+				position: relative;
+
+				&:hover {
+					transform: translateY(-5px) scale(1.1);
+					filter: drop-shadow(0 8px 16px rgba(255, 0, 0, 0.4));
+				}
+
+				svg {
+					width: 100%;
+					height: 100%;
+					transition: all $transition-base;
+
+					// Специальные эффекты для разных соцсетей
+					path {
+						transition: all $transition-base;
+					}
+				}
+
+				// Эффект свечения для Instagram
+				&:hover svg path[fill*='url(#instagramGradient)'] {
+					filter: brightness(1.2);
+				}
+
+				// Эффект для YouTube
+				&:hover svg path[fill='#FF0000'] {
+					filter: brightness(1.1);
+				}
+
+				// Эффект для Telegram
+				&:hover svg path[fill='#0088cc'] {
+					filter: brightness(1.2) drop-shadow(0 0 8px rgba(0, 136, 204, 0.6));
+				}
+
+				// Эффект для Threads (был X)
+				&:hover svg path[fill='#ffffff'] {
+					fill: $accent-red; // Красный при наведении
+				}
+			}
+		}
+	}
+
+	.footer-bottom {
+		text-align: center;
+		padding-top: 30px;
+		border-top: 1px solid $border-color;
+
+		p {
+			color: $text-gray;
+			font-size: 14px;
+		}
+	}
+}
+
+// Scroll to top button
+.scroll-to-top {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 50px;
+	height: 50px;
+	@include flex-center;
+	background: rgba(255, 0, 0, 0.8);
+	color: $text-white;
+	border-radius: 50%;
+	font-size: 24px;
+	cursor: pointer;
+	opacity: 0;
+	visibility: hidden;
+	transition: all $transition-base;
+	z-index: $z-dropdown;
+
+	&.visible {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	&:hover {
+		background: $accent-red;
+		transform: translateY(-5px);
+		@include card-shadow(true);
+	}
+
+	@include mobile {
+		bottom: 20px;
+		right: 20px;
+		width: 45px;
+		height: 45px;
+		font-size: 20px;
+	}
+}
+@import 'home';
+@import 'video-page';
+@import 'gallery-page';
+@import 'contact-page';
+@import 'rabbit';
+
+// Reset и базовые стили
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	text-decoration: none;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: $font-primary;
+	background-color: $bg-black;
+	color: $text-white;
+	line-height: 1.6;
+	overflow-x: hidden;
+	box-shadow: none !important; // Убираем возможные засветы
+}
+
+.container {
+	max-width: $max-width;
+	margin: 0 auto;
+	padding: 0 40px;
+
+	@include mobile {
+		padding: 0 20px;
+	}
+}
+
+// Утилиты
+.section-title {
+	font-size: clamp(32px, 5vw, 48px);
+	text-align: center;
+	margin-bottom: 20px;
+	color: $accent-red;
+	font-weight: 700;
+	letter-spacing: 2px;
+}
+
+.section-subtitle {
+	text-align: center;
+	color: $text-gray;
+	margin-bottom: 50px;
+	font-size: 18px;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	hyphens: auto;
+
+	@include mobile {
+		font-size: 16px;
+	}
+}
+
+// Скрыть скроллбары но оставить функциональность
+.no-scrollbar {
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+// Кнопка по умолчанию
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+// Ссылка по умолчанию
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+// Изображения адаптивные
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+// Список без стилей
+ul {
+	list-style: none;
+}
+
+// Выделение текста
+::selection {
+	background: $accent-red;
+	color: $text-white;
+}

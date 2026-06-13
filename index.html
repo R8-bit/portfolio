@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITER | Frontend Developer — Портфолио</title>
+    <meta name="description"
+        content="Портфолио BITER — frontend-разработчик, создающий уникальные интерактивные веб-интерфейсы с GSAP, Canvas и современными технологиями.">
+    <meta name="keywords" content="BITER, frontend developer, portfolio, HTML, CSS, JavaScript, GSAP, Canvas">
+    <meta property="og:title" content="BITER | Frontend Developer">
+    <meta property="og:description"
+        content="Создаю цифровые впечатления — интерактивные веб-проекты с вниманием к деталям.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="terminal.css">
+    <link rel="stylesheet" href="projects.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Кастомный курсор -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Прогресс скролла -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Кнопка наверх -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
+    <!-- Навигация -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">BITER<span class="dot">.</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="nav-link" data-section="home">Главная</a></li>
+            <li><a href="#about" class="nav-link" data-section="about">Обо мне</a></li>
+            <li><a href="#services" class="nav-link" data-section="services">Услуги</a></li>
+            <li><a href="#projects" class="nav-link" data-section="projects">Проекты</a></li>
+            <li><a href="#contact" class="nav-link" data-section="contact">Контакты</a></li>
+        </ul>
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
+    </nav>
+
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#home" class="mobile-nav-link">Главная</a></li>
+            <li><a href="#about" class="mobile-nav-link">Обо мне</a></li>
+            <li><a href="#services" class="mobile-nav-link">Услуги</a></li>
+            <li><a href="#projects" class="mobile-nav-link">Проекты</a></li>
+            <li><a href="#contact" class="mobile-nav-link">Контакты</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+        <!-- Анимированная сетка на фоне -->
+        <canvas class="hero-canvas" id="heroCanvas"></canvas>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Открыт к работе
+            </div>
+            <h1 class="hero-title" data-text="Привет, я BITER">Привет, я <span class="accent-text" id="accentName">BITER</span></h1>
+            <p class="hero-subtitle"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary" id="btn-works">Мои работы</a>
+                <a href="#contact" class="btn btn-secondary" id="btn-contact">Связаться</a>
+            </div>
+            <div class="hero-scroll-hint">
+                <span>Скролл вниз</span>
+                <div class="scroll-arrow">
+                    <div class="scroll-arrow-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <!-- SVG-аватар (кибerpunk стиль) -->
+            <div class="avatar-container">
+                <div class="avatar-glow"></div>
+                <svg class="avatar-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Фон аватара -->
+                    <defs>
+                        <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#140a18" />
+                            <stop offset="100%" stop-color="#0c0810" />
+                        </radialGradient>
+                        <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff7c2a" />
+                            <stop offset="100%" stop-color="#ffb347" />
+                        </linearGradient>
+                        <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff2d6b" />
+                            <stop offset="100%" stop-color="#c0174a" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Фон круга -->
+                    <circle cx="150" cy="150" r="148" fill="url(#bgGrad)" stroke="#ff7c2a" stroke-width="1"
+                        opacity="0.4" />
+                    <!-- Шестиугольная сетка -->
+                    <g opacity="0.15" stroke="#00f3ff" stroke-width="0.5" fill="none">
+                        <polygon points="150,30 195,75 195,135 150,165 105,135 105,75" />
+                        <polygon points="150,50 185,82 185,130 150,148 115,130 115,82" />
+                        <line x1="150" y1="30" x2="150" y2="10" />
+                        <line x1="195" y1="75" x2="210" y2="65" />
+                        <line x1="195" y1="135" x2="215" y2="145" />
+                        <line x1="150" y1="165" x2="150" y2="185" />
+                        <line x1="105" y1="135" x2="88" y2="145" />
+                        <line x1="105" y1="75" x2="90" y2="65" />
+                    </g>
+                    <!-- Схема тела / силуэт -->
+                    <!-- Голова -->
+                    <ellipse cx="150" cy="115" rx="48" ry="55" fill="#0d0d1a" stroke="url(#cyanGrad)" stroke-width="2"
+                        filter="url(#glow)" />
+                    <!-- Маска / визор -->
+                    <path d="M115 105 Q150 90 185 105 L185 125 Q165 140 150 145 Q135 140 115 125 Z" fill="#150a10"
+                        stroke="url(#cyanGrad)" stroke-width="1.5" />
+                    <!-- Глаза (линзы) -->
+                    <ellipse cx="133" cy="113" rx="14" ry="9" fill="#0d0208" stroke="#ff7c2a" stroke-width="1.5" />
+                    <ellipse cx="167" cy="113" rx="14" ry="9" fill="#0d0208" stroke="#ff7c2a" stroke-width="1.5" />
+                    <!-- Свечение глаз -->
+                    <ellipse cx="133" cy="113" rx="8" ry="5" fill="#ff7c2a" opacity="0.25" />
+                    <ellipse cx="167" cy="113" rx="8" ry="5" fill="#ff7c2a" opacity="0.25" />
+                    <circle cx="133" cy="113" r="3" fill="#ff7c2a" filter="url(#glow)" />
+                    <circle cx="167" cy="113" r="3" fill="#ff7c2a" filter="url(#glow)" />
+                    <!-- Линия рта/подбородок -->
+                    <path d="M133 133 Q150 140 167 133" stroke="#ff7c2a" stroke-width="1.5" fill="none" opacity="0.7" />
+                    <!-- Линии на маске -->
+                    <line x1="120" y1="118" x2="128" y2="118" stroke="#ff7c2a" stroke-width="1" opacity="0.5" />
+                    <line x1="172" y1="118" x2="180" y2="118" stroke="#ff7c2a" stroke-width="1" opacity="0.5" />
+                    <!-- Уши/темпоральные пластины -->
+                    <rect x="100" y="105" width="8" height="20" rx="2" fill="#150a10" stroke="url(#cyanGrad)"
+                        stroke-width="1" />
+                    <rect x="192" y="105" width="8" height="20" rx="2" fill="#150a10" stroke="url(#cyanGrad)"
+                        stroke-width="1" />
+                    <!-- Точки на ушах -->
+                    <circle cx="104" cy="112" r="2" fill="#ff2d6b" filter="url(#glow)" />
+                    <circle cx="196" cy="112" r="2" fill="#ff2d6b" filter="url(#glow)" />
+                    <!-- Шея -->
+                    <rect x="138" y="166" width="24" height="20" rx="3" fill="#0d0d1a" stroke="url(#cyanGrad)"
+                        stroke-width="1.5" />
+                    <!-- Схема тела -->
+                    <path
+                        d="M90 190 Q90 175 110 170 L138 170 L138 186 L162 186 L162 170 L190 170 Q210 175 210 190 L210 240 L90 240 Z"
+                        fill="#100816" stroke="url(#cyanGrad)" stroke-width="1.5" />
+                    <!-- Детали на груди: схема платы -->
+                    <rect x="128" y="195" width="44" height="28" rx="3" fill="#150a10" stroke="#ff7c2a" stroke-width="1"
+                        opacity="0.8" />
+                    <circle cx="150" cy="209" r="8" fill="none" stroke="url(#purpleGrad)" stroke-width="1.5"
+                        filter="url(#glow)" />
+                    <circle cx="150" cy="209" r="4" fill="#ff2d6b" opacity="0.6" />
+                    <!-- Маленькие контакты -->
+                    <rect x="133" y="197" width="3" height="3" fill="#ff7c2a" opacity="0.7" />
+                    <rect x="140" y="197" width="3" height="3" fill="#ff7c2a" opacity="0.7" />
+                    <rect x="164" y="197" width="3" height="3" fill="#ff2d6b" opacity="0.7" />
+                    <rect x="171" y="197" width="3" height="3" fill="#ff2d6b" opacity="0.7" />
+                    <!-- Линии данных -->
+                    <line x1="100" y1="200" x2="128" y2="200" stroke="#ff7c2a" stroke-width="0.8" opacity="0.4" />
+                    <line x1="100" y1="210" x2="128" y2="210" stroke="#ff7c2a" stroke-width="0.8" opacity="0.4" />
+                    <line x1="172" y1="200" x2="200" y2="200" stroke="#ff2d6b" stroke-width="0.8" opacity="0.4" />
+                    <line x1="172" y1="215" x2="200" y2="215" stroke="#ff2d6b" stroke-width="0.8" opacity="0.4" />
+                    <!-- Плечи / разъёмы -->
+                    <rect x="92" y="175" width="14" height="25" rx="4" fill="#150a10" stroke="url(#cyanGrad)"
+                        stroke-width="1.5" />
+                    <rect x="194" y="175" width="14" height="25" rx="4" fill="#150a10" stroke="url(#cyanGrad)"
+                        stroke-width="1.5" />
+                    <!-- Антенны -->
+                    <line x1="135" y1="60" x2="128" y2="30" stroke="#ff7c2a" stroke-width="1.5" filter="url(#glow)"
+                        opacity="0.8" />
+                    <circle cx="128" cy="28" r="3" fill="#ff7c2a" filter="url(#glow)" />
+                    <line x1="165" y1="60" x2="172" y2="30" stroke="#ff2d6b" stroke-width="1.5" filter="url(#glow)"
+                        opacity="0.8" />
+                    <circle cx="172" cy="28" r="3" fill="#ff2d6b" filter="url(#glow)" />
+                    <!-- Внешнее кольцо -->
+                    <circle cx="150" cy="150" r="145" fill="none" stroke="url(#cyanGrad)" stroke-width="0.5"
+                        stroke-dasharray="4 8" opacity="0.35" />
+                    <circle cx="150" cy="150" r="140" fill="none" stroke="url(#purpleGrad)" stroke-width="0.5"
+                        stroke-dasharray="2 12" opacity="0.25" />
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section-title reveal-title">Обо мне</h2>
+            <div class="about-grid">
+                <div class="about-text reveal-left">
+                    <p class="about-desc">Я увлечённый frontend-разработчик, создающий уникальные интерактивные
+                        веб-интерфейсы. Меня вдохновляют современные технологии, анимации на Canvas и внимание к
+                        деталям.</p>
+                    <div class="skills-list">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">GSAP</span>
+                        <span class="skill-tag">Canvas API</span>
+                        <span class="skill-tag">HLS.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">UI/UX</span>
+                    </div>
+                </div>
+                <div class="about-visual reveal-right">
+                    <div class="code-card">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <span class="code-dot-red"></span>
+                                <span class="code-dot-yellow"></span>
+                                <span class="code-dot-green"></span>
+                            </div>
+                            <span class="code-filename">developer.js</span>
+                        </div>
+                        <pre class="code-body"><code><span class="kw">const</span> <span class="var">developer</span> = {
+  <span class="prop">name</span>: <span class="str">"BITER"</span>,
+  <span class="prop">passion</span>: <span class="str">"Creative Coding"</span>,
+  <span class="prop">tools</span>: [<span class="str">"GSAP"</span>, <span class="str">"Canvas"</span>, <span class="str">"HLS"</span>],
+  <span class="prop">status</span>: <span class="str">"Ready to work"</span>,
+  <span class="prop">coffee</span>: <span class="num">Infinity</span>
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="stats-grid reveal-up">
+                <div class="stat-card">
+                    <span class="stat-number" data-target="3">0</span>
+                    <span class="stat-plus">+</span>
+                    <span class="stat-label">Проекта завершено</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-target="2">0</span>
+                    <span class="stat-plus">+</span>
+                    <span class="stat-label">Года практики</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-target="8">0</span>
+                    <span class="stat-plus">+</span>
+                    <span class="stat-label">Технологий</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" data-target="100">0</span>
+                    <span class="stat-plus">%</span>
+                    <span class="stat-label">Отдачи</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section services">
+        <div class="container">
+            <h2 class="section-title reveal-title">Мои услуги</h2>
+            <div class="services-grid">
+
+                <!-- Услуга 1: Веб-разработка -->
+                <div class="service-card reveal-card">
+                    <div class="service-card-header">
+                        <div class="service-icon">🌐</div>
+                        <div class="service-card-header-text">
+                            <div class="service-title">Веб-разработка под ключ</div>
+                        </div>
+                        <span class="service-number">01</span>
+                    </div>
+                    <ul class="service-list">
+                        <li>Лендинги, сайты-визитки, корпоративные порталы</li>
+                        <li>Адаптивный дизайн, UX/UI, мобильная версия</li>
+                        <li>Интеграция платежей, CRM, Telegram-ботов</li>
+                    </ul>
+                    <div class="service-note">Сайты, которые приводят клиентов за счёт встроенных маркетинговых блоков и
+                        повышенной конверсии.</div>
+                </div>
+
+                <!-- Услуга 2: Скрипты и автоматизация -->
+                <div class="service-card reveal-card">
+                    <div class="service-card-header">
+                        <div class="service-icon">⚡</div>
+                        <div class="service-card-header-text">
+                            <div class="service-title">Кастомные скрипты и автоматизация</div>
+                        </div>
+                        <span class="service-number">02</span>
+                    </div>
+                    <ul class="service-list">
+                        <li>Парсеры данных (таргет, сбор баз, аналитика)</li>
+                        <li>Скрипты для упрощения рутины (автопостинг, автореги)</li>
+                    </ul>
+                    <div class="service-note">Экономят часы ручной работы и позволяют зарабатывать больше без увеличения
+                        нагрузки.</div>
+                </div>
+
+                <!-- Услуга 3: Тех. поддержка -->
+                <div class="service-card reveal-card">
+                    <div class="service-card-header">
+                        <div class="service-icon">🔧</div>
+                        <div class="service-card-header-text">
+                            <div class="service-title">Техническая поддержка и доработки</div>
+                        </div>
+                        <span class="service-number">03</span>
+                    </div>
+                    <ul class="service-list">
+                        <li>Исправление багов</li>
+                        <li>Оптимизация скорости</li>
+                        <li>Расширение функционала</li>
+                        <li>Консультации по веб-разработке</li>
+                    </ul>
+                    <div class="service-note">Улучшаю текущие проекты так, чтобы они работали быстрее и приносили больше
+                        прибыли.</div>
+                </div>
+
+            </div>
+
+            <!-- Нижние блоки -->
+            <div class="services-bottom reveal-up">
+                <div class="services-bottom-card">
+                    <div class="services-bottom-icon">📁</div>
+                    <div class="services-bottom-text">
+                        <strong>Портфолио — по запросу</strong>
+                        <p>Дополнительные работы и кейсы предоставляю в личной переписке.</p>
+                    </div>
+                </div>
+                <div class="services-bottom-card">
+                    <div class="services-bottom-icon">🤝</div>
+                    <div class="services-bottom-text">
+                        <strong>Нужны менеджеры</strong>
+                        <p>Оплата: <strong style="color:var(--accent-cyan)">2 000 ₽</strong> за приведённый заказ. За
+                            подробностями — <a href="#">в ЛС</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="proj-section">
+
+        <!-- Заголовок -->
+        <div class="proj-header">
+            <span class="proj-eyebrow reveal-fade">Избранные работы</span>
+            <h2 class="proj-main-title reveal-title">Проекты</h2>
+        </div>
+
+        <!-- 01 OPA 201 -->
+        <div class="proj-row" id="card-opa">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="opa"></canvas>
+                <div class="proj-visual-overlay proj-overlay-right"></div>
+            </div>
+            <div class="proj-content proj-content-right">
+                <span class="proj-num">01</span>
+                <span class="proj-cat">Sports Platform</span>
+                <h3 class="proj-title">OPA 201</h3>
+                <p class="proj-desc">Сайт городской любительской футбольной лиги. Динамичная навигация, Canvas-анимации на Hero и интеграция видеопотоков матчей через HLS.</p>
+                <div class="proj-tags">
+                    <span>HTML</span><span>CSS</span><span>GSAP</span><span>Canvas</span><span>HLS</span>
+                </div>
+                <a href="opa 201/главная.html" class="proj-btn" target="_blank">Посмотреть проект</a>
+            </div>
+        </div>
+
+        <!-- 02 Juggler -->
+        <div class="proj-row proj-row-reverse" id="card-juggler">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="juggler"></canvas>
+                <div class="proj-visual-overlay proj-overlay-left"></div>
+            </div>
+            <div class="proj-content proj-content-left">
+                <span class="proj-num">02</span>
+                <span class="proj-cat">Task Manager</span>
+                <h3 class="proj-title">Juggler</h3>
+                <p class="proj-desc">Платформа для управления задачами и командными проектами. Галерея, авторизация, Node.js-бэкенд и адаптивный интерфейс.</p>
+                <div class="proj-tags">
+                    <span>JavaScript</span><span>Node.js</span><span>Canvas</span>
+                </div>
+                <a href="juggler/frontend/index.html" class="proj-btn" target="_blank">Посмотреть проект</a>
+            </div>
+        </div>
+
+        <!-- 03 Moodle v2 -->
+        <div class="proj-row" id="card-moodle">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="moodle"></canvas>
+                <div class="proj-visual-overlay proj-overlay-right"></div>
+            </div>
+            <div class="proj-content proj-content-right">
+                <span class="proj-num">03</span>
+                <span class="proj-cat">LMS System</span>
+                <h3 class="proj-title">Moodle v2</h3>
+                <p class="proj-desc">Переработанная система управления обучением. Canvas-анимации, HLS-видеолекции и полноценная панель администратора.</p>
+                <div class="proj-tags">
+                    <span>Canvas</span><span>HLS</span><span>GSAP</span>
+                </div>
+                <a href="moodlev-2/moodle/главная/index2.html" class="proj-btn" target="_blank">Посмотреть проект</a>
+            </div>
+        </div>
+
+        <!-- 04 Dashboard -->
+        <div class="proj-row proj-row-reverse" id="card-dashboard">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="dashboard"></canvas>
+                <div class="proj-visual-overlay proj-overlay-left"></div>
+            </div>
+            <div class="proj-content proj-content-left">
+                <span class="proj-num">04</span>
+                <span class="proj-cat">Analytics Dashboard</span>
+                <h3 class="proj-title">BITER Dashboard</h3>
+                <p class="proj-desc">Аналитическая панель разработчика с графиками доходов, статистикой проектов и интерактивной картой навыков.</p>
+                <div class="proj-tags">
+                    <span>React</span><span>Vite</span><span>Charts</span>
+                </div>
+                <a href="react-dashboard/index.html" class="proj-btn" target="_blank">Посмотреть проект</a>
+            </div>
+        </div>
+
+        <!-- 05 NFT Bot -->
+        <div class="proj-row" id="card-nftbot">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="nft"></canvas>
+                <div class="proj-visual-overlay proj-overlay-right"></div>
+            </div>
+            <div class="proj-content proj-content-right">
+                <span class="proj-num">05</span>
+                <span class="proj-cat">Telegram Bot · Python</span>
+                <h3 class="proj-title">NFT Bot</h3>
+                <p class="proj-desc">Telegram-бот для мониторинга NFT-коллекций, уведомлений о минте и отслеживания цен на рынке в реальном времени.</p>
+                <div class="proj-tags">
+                    <span>Python</span><span>aiogram</span><span>Web3</span>
+                </div>
+                <a href="#contact" class="proj-btn">Запросить доступ</a>
+            </div>
+        </div>
+
+        <!-- 06 WebGL Studio -->
+        <div class="proj-row proj-row-reverse" id="card-webgl">
+            <div class="proj-visual">
+                <canvas class="pcard-canvas" data-theme="webgl"></canvas>
+                <div class="proj-visual-overlay proj-overlay-left"></div>
+            </div>
+            <div class="proj-content proj-content-left">
+                <span class="proj-num">06</span>
+                <span class="proj-cat">Creative Coding</span>
+                <h3 class="proj-title">WebGL Studio</h3>
+                <p class="proj-desc">Интерактивная студия для WebGL-шейдеров и 3D-визуализаций. Редактор шейдеров с превью в реальном времени.</p>
+                <div class="proj-tags">
+                    <span>WebGL</span><span>GLSL</span><span>Three.js</span>
+                </div>
+                <a href="webgl-studio/index.html" class="proj-btn" target="_blank">Посмотреть проект</a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section-title reveal-title">Связаться</h2>
+            <div class="contact-grid">
+                <!-- Левая часть: текст + соцсети -->
+                <div class="contact-info reveal-left">
+                    <p class="contact-tagline">Открыт к предложениям,<br>сотрудничеству и новым идеям.</p>
+                    <div class="contact-socials">
+                        <a href="#" class="social-card" id="social-github" aria-label="GitHub">
+                            <div class="social-icon">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                                </svg>
+                            </div>
+                            <div class="social-info">
+                                <span class="social-name">GitHub</span>
+                                <span class="social-handle">@biter</span>
+                            </div>
+                            <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7v10" />
+                            </svg>
+                        </a>
+                        <a href="#" class="social-card" id="social-telegram" aria-label="Telegram">
+                            <div class="social-icon social-icon-tg">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+                                </svg>
+                            </div>
+                            <div class="social-info">
+                                <span class="social-name">Telegram</span>
+                                <span class="social-handle">@biter</span>
+                            </div>
+                            <svg class="social-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7v10" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Правая часть: форма -->
+                <div class="contact-form-wrapper reveal-right">
+                    <form class="contact-form" id="contactForm" novalidate>
+                        <div class="form-group">
+                            <label for="formName">Имя</label>
+                            <input type="text" id="formName" name="name" placeholder="Как вас зовут?" autocomplete="off"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formEmail">Email</label>
+                            <input type="email" id="formEmail" name="email" placeholder="your@email.com"
+                                autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formMessage">Сообщение</label>
+                            <textarea id="formMessage" name="message" placeholder="Расскажите о вашем проекте..."
+                                rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary form-submit" id="formSubmit">
+                            <span class="submit-text">Отправить</span>
+                            <svg class="submit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </button>
+                        <div class="form-success" id="formSuccess">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Сообщение отправлено! Отвечу в ближайшее время.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="footer-logo">BITER<span class="dot">.</span></span>
+                    <p>Frontend-разработчик.<br>Создаю цифровые впечатления.</p>
+                </div>
+                <div class="footer-nav">
+                    <span class="footer-nav-title">Навигация</span>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#about">Обо мне</a></li>
+                        <li><a href="#services">Услуги</a></li>
+                        <li><a href="#projects">Проекты</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <span class="footer-nav-title">Социальные сети</span>
+                    <ul>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Telegram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> BITER. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+    <script src="scroll-animations.js"></script>
+    <script src="project-covers.js"></script>
+    <script src="terminal.js"></script>
+</body>
+
+</html>

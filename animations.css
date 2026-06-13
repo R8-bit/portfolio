@@ -1,0 +1,346 @@
+/* =============================================
+   BITER — SCROLL ANIMATIONS & EFFECTS
+   ============================================= */
+
+/* ── Базовые reveal-классы ──────────────── */
+.reveal-title,
+.reveal-left,
+.reveal-right,
+.reveal-up,
+.reveal-card,
+.reveal-fade,
+.reveal-scale {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 0.9s;
+}
+
+.reveal-title { 
+    transform: translateY(50px) skewY(2deg); 
+    transition-duration: 1s;
+}
+.reveal-left   { transform: translateX(-70px); }
+.reveal-right  { transform: translateX(70px); }
+.reveal-up     { transform: translateY(50px); }
+.reveal-fade   { transform: translateY(20px); }
+.reveal-scale  { transform: scale(0.88) translateY(30px); }
+.reveal-card   { 
+    transform: translateY(40px) scale(0.96); 
+    transition-duration: 0.8s; 
+}
+
+/* Задержка для каждой карточки */
+.reveal-card:nth-child(1) { transition-delay: 0s; }
+.reveal-card:nth-child(2) { transition-delay: 0.12s; }
+.reveal-card:nth-child(3) { transition-delay: 0.24s; }
+.reveal-card:nth-child(4) { transition-delay: 0.36s; }
+.reveal-card:nth-child(5) { transition-delay: 0.48s; }
+
+/* In-view состояние */
+.reveal-title.in-view,
+.reveal-left.in-view,
+.reveal-right.in-view,
+.reveal-up.in-view,
+.reveal-card.in-view,
+.reveal-fade.in-view,
+.reveal-scale.in-view {
+    opacity: 1;
+    transform: none;
+}
+
+/* ── Parallax-обёртки ───────────────────── */
+.parallax-layer {
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+/* ── Section title — split-text эффект ─── */
+.section-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(60px) rotateX(45deg);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.section-title.in-view .char {
+    opacity: 1;
+    transform: none;
+}
+
+.section-title.in-view .char:nth-child(1)  { transition-delay: 0.00s; }
+.section-title.in-view .char:nth-child(2)  { transition-delay: 0.03s; }
+.section-title.in-view .char:nth-child(3)  { transition-delay: 0.06s; }
+.section-title.in-view .char:nth-child(4)  { transition-delay: 0.09s; }
+.section-title.in-view .char:nth-child(5)  { transition-delay: 0.12s; }
+.section-title.in-view .char:nth-child(6)  { transition-delay: 0.15s; }
+.section-title.in-view .char:nth-child(7)  { transition-delay: 0.18s; }
+.section-title.in-view .char:nth-child(8)  { transition-delay: 0.21s; }
+.section-title.in-view .char:nth-child(9)  { transition-delay: 0.24s; }
+.section-title.in-view .char:nth-child(10) { transition-delay: 0.27s; }
+.section-title.in-view .char:nth-child(11) { transition-delay: 0.30s; }
+.section-title.in-view .char:nth-child(12) { transition-delay: 0.33s; }
+.section-title.in-view .char:nth-child(n+13) { transition-delay: 0.36s; }
+
+/* ── Glitch эффект на hero-title ────────── */
+.hero-title {
+    position: relative;
+}
+
+.hero-title.glitch::before,
+.hero-title.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.hero-title.glitch::before {
+    color: #ff2d6b;
+    animation: glitch-before 3s infinite linear;
+    clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    transform: translateX(-2px);
+    opacity: 0.7;
+}
+
+.hero-title.glitch::after {
+    color: #ff7c2a;
+    animation: glitch-after 3s infinite linear;
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    transform: translateX(2px);
+    opacity: 0.7;
+}
+
+@keyframes glitch-before {
+    0%, 92%   { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translateX(-2px); }
+    93%       { clip-path: polygon(0 55%, 100% 55%, 100% 65%, 0 65%); transform: translateX(4px) skewX(2deg); }
+    94%       { clip-path: polygon(0 10%, 100% 10%, 100% 25%, 0 25%); transform: translateX(-3px); }
+    95%, 100% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translateX(-2px); }
+}
+
+@keyframes glitch-after {
+    0%, 90%   { clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%); transform: translateX(2px); }
+    91%       { clip-path: polygon(0 30%, 100% 30%, 100% 45%, 0 45%); transform: translateX(-4px) skewX(-2deg); }
+    92%       { clip-path: polygon(0 70%, 100% 70%, 100% 85%, 0 85%); transform: translateX(3px); }
+    93%, 100% { clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%); transform: translateX(2px); }
+}
+
+/* ── Горизонтальный скролл для проектов ── */
+.projects-scroll-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* ── Floating декоративные шейпы ────────── */
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    will-change: transform;
+}
+
+.bg-blob.visible { opacity: 1; }
+
+.bg-blob-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 124, 42, 0.06), transparent 70%);
+    top: -200px;
+    right: -200px;
+}
+
+.bg-blob-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 45, 107, 0.05), transparent 70%);
+    bottom: -150px;
+    left: -150px;
+}
+
+/* ── Scroll progress секций ─────────────── */
+.section-progress-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent-cyan, #ff7c2a), var(--accent-purple, #ff2d6b));
+    border-radius: 3px;
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.2s linear;
+    box-shadow: 0 0 10px rgba(255, 124, 42, 0.5);
+}
+
+/* ── Skill tags анимация ────────────────── */
+.skills-list .skill-tag {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s, color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+.skills-list.in-view .skill-tag { opacity: 1; transform: none; }
+.skills-list.in-view .skill-tag:nth-child(1) { transition-delay: 0.05s; }
+.skills-list.in-view .skill-tag:nth-child(2) { transition-delay: 0.10s; }
+.skills-list.in-view .skill-tag:nth-child(3) { transition-delay: 0.15s; }
+.skills-list.in-view .skill-tag:nth-child(4) { transition-delay: 0.20s; }
+.skills-list.in-view .skill-tag:nth-child(5) { transition-delay: 0.25s; }
+.skills-list.in-view .skill-tag:nth-child(6) { transition-delay: 0.30s; }
+.skills-list.in-view .skill-tag:nth-child(7) { transition-delay: 0.35s; }
+.skills-list.in-view .skill-tag:nth-child(8) { transition-delay: 0.40s; }
+
+/* ── About section — левая часть ───────── */
+.about-text { overflow: hidden; }
+
+/* ── GSAP ScrollTrigger: горизонтальный pin ─── */
+.pin-spacer-override { overflow: visible !important; }
+
+/* ── Stat cards — stagger ───────────────── */
+.stats-grid .stat-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s, box-shadow 0.3s;
+}
+
+.stats-grid.in-view .stat-card { opacity: 1; transform: none; }
+.stats-grid.in-view .stat-card:nth-child(1) { transition-delay: 0.00s; }
+.stats-grid.in-view .stat-card:nth-child(2) { transition-delay: 0.12s; }
+.stats-grid.in-view .stat-card:nth-child(3) { transition-delay: 0.24s; }
+.stats-grid.in-view .stat-card:nth-child(4) { transition-delay: 0.36s; }
+
+/* ── Project cards hover-lift ───────────── */
+.project-card {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.4s ease,
+                border-color 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 50px rgba(255, 124, 42, 0.1);
+}
+
+/* ── Marquee text (бегущая строка) ────── */
+.marquee-section {
+    overflow: hidden;
+    padding: 2rem 0;
+    background: rgba(255, 124, 42, 0.04);
+    border-top: 1px solid rgba(255, 124, 42, 0.08);
+    border-bottom: 1px solid rgba(255, 124, 42, 0.08);
+    position: relative;
+}
+
+.marquee-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marqueeScroll 20s linear infinite;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+.marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap;
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(245, 238, 235, 0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    transition: color 0.3s;
+}
+
+.marquee-item:hover { color: var(--accent-cyan, #ff7c2a); }
+
+.marquee-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-cyan, #ff7c2a);
+    border-radius: 50%;
+    opacity: 0.4;
+    flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ── Noise overlay ──────────────────────── */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.018;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+/* ── Glow линия между секциями ──────────── */
+.section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 124, 42, 0.3), transparent);
+    position: relative;
+}
+
+.section-divider::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 5px;
+    background: radial-gradient(ellipse, rgba(255, 124, 42, 0.4), transparent);
+    border-radius: 50%;
+}
+
+/* ── Hover-glow на секциях ──────────────── */
+.section {
+    position: relative;
+    overflow: hidden;
+}
+
+.section::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 160px;
+    background: radial-gradient(ellipse, rgba(255, 124, 42, 0.04), transparent 70%);
+    pointer-events: none;
+}
+
+/* ── Scroll snap для десктопа (опционально) */
+@media (min-width: 1024px) {
+    .snap-container {
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+    .snap-section {
+        scroll-snap-align: start;
+    }
+}

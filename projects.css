@@ -1,0 +1,302 @@
+/* =============================================
+   PROJECTS — DAVID BLAINE FULLWIDTH STYLE
+   ============================================= */
+
+/* ── Секция-обёртка ───────────────────── */
+.proj-section {
+    background: #000;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* ── Шапка секции ─────────────────────── */
+.proj-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 7rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+}
+
+.proj-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, rgba(255,124,42,0.4));
+}
+
+.proj-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255, 124, 42, 0.6);
+    margin-bottom: 1.2rem;
+    display: block;
+}
+
+.proj-main-title {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    letter-spacing: -3px;
+    color: #fff;
+    line-height: 1;
+    margin: 0;
+}
+
+/* ── Строка проекта ───────────────────── */
+.proj-row {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    min-height: 90vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.proj-row-reverse {
+    grid-template-columns: 45% 55%;
+    direction: rtl;
+}
+
+.proj-row-reverse > * {
+    direction: ltr;
+}
+
+/* ── Визуальная часть ─────────────────── */
+.proj-visual {
+    position: relative;
+    overflow: hidden;
+}
+
+.proj-visual canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proj-row:hover .proj-visual canvas {
+    transform: scale(1.04);
+}
+
+/* Градиентные переходы */
+.proj-visual-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.proj-overlay-right {
+    background: linear-gradient(
+        to right,
+        transparent 55%,
+        rgba(0, 0, 0, 0.7) 80%,
+        #000 100%
+    );
+}
+
+.proj-overlay-left {
+    background: linear-gradient(
+        to left,
+        transparent 55%,
+        rgba(0, 0, 0, 0.7) 80%,
+        #000 100%
+    );
+}
+
+/* ── Контентная часть ─────────────────── */
+.proj-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 5% 4rem 3%;
+    position: relative;
+    z-index: 5;
+    background: #000;
+}
+
+.proj-content-left {
+    padding: 4rem 3% 4rem 5%;
+}
+
+/* ── Номер ────────────────────────────── */
+.proj-num {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 4px;
+    color: rgba(255, 124, 42, 0.45);
+    margin-bottom: 0.5rem;
+}
+
+/* ── Категория ────────────────────────── */
+.proj-cat {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.28);
+    margin-bottom: 1.5rem;
+}
+
+/* ── Заголовок проекта ────────────────── */
+.proj-title {
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    color: #fff;
+    line-height: 1.05;
+    margin: 0 0 1.5rem;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.proj-row:hover .proj-title {
+    color: #ff7c2a;
+}
+
+/* ── Описание ─────────────────────────── */
+.proj-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2rem;
+}
+
+/* ── Теги ─────────────────────────────── */
+.proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.proj-tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 3px 10px;
+    border-radius: 50px;
+    transition: all 0.25s;
+}
+
+.proj-row:hover .proj-tags span {
+    color: rgba(255, 124, 42, 0.7);
+    border-color: rgba(255, 124, 42, 0.25);
+}
+
+/* ── Кнопка ───────────────────────────── */
+.proj-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.7rem 1.8rem;
+    border-radius: 0;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+    align-self: flex-start;
+    text-decoration: none;
+}
+
+.proj-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 124, 42, 0.08);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proj-btn:hover {
+    color: #fff;
+    border-color: rgba(255, 124, 42, 0.6);
+    letter-spacing: 3px;
+}
+
+.proj-btn:hover::before {
+    transform: scaleX(1);
+}
+
+/* ── Разделитель между проектами ──────── */
+.proj-row + .proj-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Горизонтальная линия-акцент слева */
+.proj-content::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 0;
+    background: linear-gradient(to bottom, transparent, #ff7c2a, transparent);
+    transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.proj-row:hover .proj-content::before {
+    height: 120px;
+}
+
+.proj-content-left::before {
+    left: auto;
+    right: 0;
+}
+
+/* ── Адаптив ──────────────────────────── */
+@media (max-width: 900px) {
+    .proj-row,
+    .proj-row-reverse {
+        grid-template-columns: 1fr;
+        grid-template-rows: 50vh auto;
+        direction: ltr;
+        min-height: auto;
+    }
+
+    .proj-row-reverse > * { direction: ltr; }
+
+    .proj-visual { height: 50vh; }
+
+    .proj-overlay-right,
+    .proj-overlay-left {
+        background: linear-gradient(to bottom, transparent 40%, #000 100%);
+    }
+
+    .proj-content,
+    .proj-content-left {
+        padding: 3rem 2rem 4rem;
+        background: #000;
+    }
+
+    .proj-title { font-size: 2rem; }
+    .proj-desc { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .proj-main-title { font-size: 3rem; letter-spacing: -2px; }
+    .proj-title { font-size: 1.7rem; }
+    .proj-header { padding: 5rem 1.5rem 4rem; }
+}

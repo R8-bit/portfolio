@@ -1,0 +1,75 @@
+// SCSS Mixins для JUGGLER
+
+// Responsive breakpoints
+@mixin mobile {
+	@media (max-width: $breakpoint-mobile) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media (min-width: calc($breakpoint-mobile + 1px)) and (max-width: $breakpoint-tablet) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: $breakpoint-desktop) {
+		@content;
+	}
+}
+
+// Flexbox центрирование
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+// Абсолютное позиционирование на весь экран
+@mixin full-cover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+// Glassmorphism эффект
+@mixin glass($opacity: 0.1) {
+	background: rgba(255, 255, 255, $opacity);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Тень для карточек
+@mixin card-shadow($hover: false) {
+	@if $hover {
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55);
+	} @else {
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+	}
+}
+
+// Текст с обрезкой
+@mixin text-ellipsis($lines: 1) {
+	@if $lines == 1 {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	} @else {
+		display: -webkit-box;
+		-webkit-line-clamp: $lines;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+}
+
+// Кнопка hover эффект
+@mixin button-hover {
+	transition: all $transition-base;
+	&:hover {
+		transform: translateY(-3px);
+		@include card-shadow(true);
+	}
+}

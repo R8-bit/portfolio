@@ -1,0 +1,160 @@
+// Дополнительные стили для главной страницы
+// Импортируются в main.scss или используются отдельно
+
+// Hero section
+.hero {
+	position: relative;
+	height: 100vh;
+	@include flex-center;
+	overflow: hidden;
+
+	.hero-bg {
+		@include full-cover;
+		background: $gradient-primary;
+		opacity: 0; // Убрали засвет
+		z-index: 0;
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		text-align: center;
+	}
+
+	.hero-title {
+		font-family: $font-display;
+		font-size: clamp(60px, 12vw, 120px);
+		letter-spacing: 15px;
+		color: $accent-red;
+		margin-bottom: 20px;
+
+		// Анимация фокуса - removed
+		// animation: focusGlow 3s ease-in-out infinite;
+
+		.letter {
+			display: inline-block;
+			// Combined entrance and loop
+			animation:
+				letterReveal 0.8s ease-out both,
+				searchlightLoopRed 3s linear infinite 1s;
+
+			@for $i from 1 through 7 {
+				&:nth-child(#{$i}) {
+					animation-delay:
+						#{(8 - $i) * 0.1}s,
+						#{(8 - $i) * 0.1}s; // Apply same delay logic to both
+				}
+			}
+		}
+
+		@include mobile {
+			letter-spacing: 8px;
+		}
+	}
+
+	.hero-subtitle {
+		font-size: clamp(18px, 3vw, 24px);
+		color: $text-gray;
+		margin-bottom: 40px;
+
+		// Remove old animation
+		// animation: fadeInUp 1s ease 0.8s backwards;
+
+		.letter {
+			display: inline-block;
+			animation: searchlightLoop 5s linear infinite;
+
+			@for $i from 1 through 40 {
+				// Approx max length of subtitle
+				&:nth-child(#{$i}) {
+					animation-delay: #{(40 - $i) * 0.1}s; // Right to left sweep
+				}
+			}
+		}
+	}
+
+	.scroll-arrow {
+		display: inline-block;
+		color: $accent-red;
+		animation: bounceArrow 2s ease-in-out infinite;
+		cursor: pointer;
+		transition: transform $transition-base;
+
+		&:hover {
+			transform: scale(1.2);
+		}
+
+		svg {
+			width: 40px;
+			height: 40px;
+		}
+	}
+}
+
+// About section
+.about {
+	background: rgba(20, 15, 45, 0.3);
+
+	.about-content {
+		max-width: 900px;
+		margin: 0 auto;
+		position: relative;
+		height: 100vh; // Такая же высота как у Hero
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.about-text {
+		font-size: clamp(16px, 2vw, 20px);
+		line-height: 2;
+		color: $text-gray;
+		position: absolute;
+		width: 100%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		// Убираем opacity 0, так как скрывать будем части
+		opacity: 1;
+
+		// Контейнер для частей
+		display: flex;
+		flex-wrap: wrap; // Чтобы текст переносился
+		justify-content: center;
+		align-items: center;
+		overflow: hidden; // Обрезаем вылеты за пределы контейнера, если нужно, или visible
+		// user request: "появляется с боку с двуз сторон". Лучше overflow: hidden на секции about, а тут visible
+
+		.split-part {
+			display: inline-block;
+			transition:
+				transform 0.2s cubic-bezier(0.1, 0.7, 0.1, 1),
+				opacity 0.2s ease;
+			opacity: 0;
+
+			&.left {
+				transform: translateX(-50vw); // Вылет от левого края (было 100vw)
+			}
+			&.right {
+				transform: translateX(50vw); // Вылет от правого края (было 100vw)
+			}
+		}
+
+		// Активное состояние
+		&.visible {
+			.split-part {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+	}
+}
+
+// Адаптация для планшетов
+@include tablet {
+	.hero {
+		.hero-title {
+			letter-spacing: 10px;
+		}
+	}
+}

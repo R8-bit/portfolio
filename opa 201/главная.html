@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Городской Футбол - Любительская Лига</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Главная страница -->
+    <div class="hero-section" id="heroSection">
+        <div class="hero-content">
+            <h1 class="hero-title">ГОРОДСКОЙ ФУТБОЛ</h1>
+            <h2 class="hero-subtitle">ЛЮБИТЕЛЬСКИЙ ОТКРЫТЫЙ</h2>
+            <button class="enter-btn" onclick="showMenu()">ВХОД</button>
+        </div>
+    </div>
+
+    <!-- Социальные сети -->
+    <div class="social-links">
+        <a href="https://vk.com/yourgroup" target="_blank" class="social-btn vk" data-tooltip="ВКонтакте">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.55 14.66h-1.45c-.63 0-.82-.5-1.93-1.61-1-.93-1.43-1.06-1.68-1.06-.35 0-.44.09-.44.52v1.47c0 .4-.13.63-1.17.63-1.9 0-4-1.16-5.5-3.32-2.24-3.16-2.86-5.53-2.86-6.02 0-.25.09-.48.52-.48h1.45c.39 0 .54.18.69.59.77 2.2 2.06 4.13 2.59 4.13.2 0 .29-.09.29-.6V8.76c-.06-.96-.56-1.05-.56-1.39 0-.2.17-.4.43-.4h2.27c.36 0 .49.19.49.57v3.02c0 .36.16.48.26.48.2 0 .38-.12.77-.52 1.17-1.3 2-3.32 2-3.32.11-.23.29-.45.73-.45h1.45c.43 0 .53.22.43.57-.16.81-1.91 3.17-1.91 3.17-.17.27-.23.39 0 .7.17.23.73.72 1.1 1.15.68.79 1.21 1.46 1.35 1.92.14.47-.07.71-.61.71z"/>
+            </svg>
+        </a>
+
+        <a href="https://t.me/yourchannel" target="_blank" class="social-btn telegram" data-tooltip="Telegram">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+        </a>
+
+        <a href="/почта.html" target="_blank" class="social-btn whatsapp" data-tooltip="whatsapp">
+           <svg viewBox="0 0 200 150">
+           <rect x="5" y="5" width="190" height="140" fill="white" stroke="#2196F3" stroke-width="8"/>
+           <line x1="5" y1="5" x2="100" y2="75" stroke="#2196F3" stroke-width="8" stroke-linecap="round"/>
+           <line x1="195" y1="5" x2="100" y2="75" stroke="#2196F3" stroke-width="8" stroke-linecap="round"/>
+           <line x1="5" y1="145" x2="70" y2="90" stroke="#2196F3" stroke-width="8" stroke-linecap="round"/>
+           <line x1="195" y1="145" x2="130" y2="90" stroke="#2196F3" stroke-width="8" stroke-linecap="round"/>
+         </svg>
+        </a>
+
+        <a href="https://youtube.com/@yourchannel" target="_blank" class="social-btn youtube" data-tooltip="YouTube">
+            <svg viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+        </a>
+
+        <a href="https://instagram.com/yourprofile" target="_blank" class="social-btn instagram" data-tooltip="Instagram">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+        </a>
+
+        <a href="https://twitter.com/yourprofile" target="_blank" class="social-btn twitter" data-tooltip="Twitter">
+            <svg viewBox="0 0 24 24">
+                <a href="https://logo-teka.com/max/">
+                    <img src="https://logo-teka.com/wp-content/uploads/2025/07/max-messenger-sign-logo.svg" alt="SVG logo Max" style="max-width:200px;">
+                </a>
+            </svg>
+        </a>
+        
+         <a href="https://vk.com/yourgroup" target="_blank" class="social-btn vk" data-tooltip="ВКонтакте">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.55 14.66h-1.45c-.63 0-.82-.5-1.93-1.61-1-.93-1.43-1.06-1.68-1.06-.35 0-.44.09-.44.52v1.47c0 .4-.13.63-1.17.63-1.9 0-4-1.16-5.5-3.32-2.24-3.16-2.86-5.53-2.86-6.02 0-.25.09-.48.52-.48h1.45c.39 0 .54.18.69.59.77 2.2 2.06 4.13 2.59 4.13.2 0 .29-.09.29-.6V8.76c-.06-.96-.56-1.05-.56-1.39 0-.2.17-.4.43-.4h2.27c.36 0 .49.19.49.57v3.02c0 .36.16.48.26.48.2 0 .38-.12.77-.52 1.17-1.3 2-3.32 2-3.32.11-.23.29-.45.73-.45h1.45c.43 0 .53.22.43.57-.16.81-1.91 3.17-1.91 3.17-.17.27-.23.39 0 .7.17.23.73.72 1.1 1.15.68.79 1.21 1.46 1.35 1.92.14.47-.07.71-.61.71z"/>
+            </svg>
+        </a>
+
+         <a href="https://rutube.ru/channel/yourchannel" target="_blank" class="social-btn twitter" data-tooltip="Rutube">
+            <svg viewBox="0 0 24 24">
+                <a href="https://logo-teka.com/rutube/">
+                    <img src="https://logo-teka.com/wp-content/uploads/2025/06/rutube-sign-logo.svg" alt="SVG logo RuTube" style="max-width:200px;" />
+                </a>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Страница меню -->
+    <div class="menu-page" id="menuPage">
+        <button class="back-btn" onclick="showHero()">← Назад</button>
+        
+        <div class="menu-container">
+            <div class="menu-header">
+                <h1>НАШ ФУТБОЛ</h1>
+                <h3>ОТКРЫТЫЙ ЛЮБИТЕЛЬСКИЙ ФУТБОЛ</h3>
+                <div class="format-text">ОТКРЫТЫЙ ЛЮБИТЕЛЬСКИЙ ФОРМАТ</div>
+            </div>
+
+            <div class="menu-grid">
+                <a href="/что это.html" class="menu-item" style="--i: 1">
+                    <h1>ЧТО ЭТО?</h1>
+                    <h4>ОПИСАНИЕ</h4>
+                    <h3>ПОДРОБНАЯ ИНФОРМАЦИЯ</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 2">
+                    <h1>КАЛЕНДАРЬ</h1>
+                    <h3>РАСПИСАНИЕ БУДУЩИХ ИГР</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 3">
+                    <h1>РЕЗУЛЬТАТЫ ИГР</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 4">
+                    <h1>ВИДЕО МАТЧЕЙ</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item1" style="--i: 5">
+                    <h1>ЧЕМПИОНЫ</h1>
+                    <h3>ЧЕМПИОНЫ ГОРОДА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item1" style="--i: 6">
+                    <h1>АБСОЛЮТНЫЕ ЧЕМПИОНЫ</h1>
+                    <h3>СИЛЬНЕЙШИЕ КОМАНДЫ ГОРОДА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item2" style="--i: 7">
+                    <h1>ЛЕГЕНДАРНЫЕ ЧЕМПИОНЫ</h1>
+                    <h3>ЛЕГЕНДАРНЫЕ КОМАНДЫ ГОРОДА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item1" style="--i: 8">
+                    <h1>РЕЙТИНГ</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item1" style="--i: 9">
+                    <h1>ГАЛЕРЕЯ СЛАВЫ</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item1" style="--i: 10">
+                    <h1>СИЛЬНЕЙШИЕ ИГРОКИ</h1>
+                    <h3>СИЛЬНЕЙШИЕ ФУТБОЛИСТЫ ПРОЕКТА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 11">
+                    <h1>ЛУЧШИЕ ИГРОКИ</h1>
+                    <h3>ПЕРСПЕКТИВНЫЕ ФУТБОЛИСТЫ</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item2" style="--i: 12">
+                    <h1>ЛЕГЕНДАРНЫЕ ФУТБОЛИСТЫ</h1>
+                    <h3>НАШИ ЛЕГЕНДАРНЫЕ ФУТБОЛИСТЫ</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 13">
+                    <h1>ЛУЧШИЕ КОМАНДЫ</h1>
+                    <h3>ПЕРСПЕКТИВНЫЕ КОМАНДЫ ПРОЕКТА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 14">
+                    <h1>УЧАСТНИКИ</h1>
+                    <h3>КОМАНДЫ НАШЕГО ПРОЕКТА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 15">
+                    <h1>ВЕСТНИК</h1>
+                    <h3>НАШЕГО ФУТБОЛА</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 16">
+                    <h1>ОБЪЯВЛЕНИЯ</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 17">
+                    <h1>ФОРУМ</h1>
+                    <h3>МНЕНИЯ & ОБСУЖДЕНИЯ</h3>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 18">
+                    <h1>ПОДКАСТЫ</h1>
+                    <h3>ДИАЛОГИ О НАШЕМ ФУТБОЛЕ</h3>
+                </a>
+
+                <a href="/принять участие.html" class="menu-item" style="--i: 19">
+                    <h1>КАК ПРИНЯТЬ УЧАСТИЕ</h1>
+                </a>
+
+                <a href="ссылка" class="menu-item" style="--i: 20">
+                    <h1>НАШИ ПАРТНЕРЫ</h1>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer> 
+        <div style="font-size: 30px; color: white;">
+            <small>&copy;Все права защищены. Юридическое агенство "Камышин & Партнеры"</small> 
+        </div>
+    </footer>
+
+    <script>
+        function showMenu() {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('menuPage').classList.add('active');
+        }
+
+        function showHero() {
+            document.getElementById('heroSection').style.display = 'flex';
+            document.getElementById('menuPage').classList.remove('active');
+        }
+
+        // обработчик для свайпа назад на мобильных
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX - touchStartX > 100 && document.getElementById('menuPage').classList.contains('active')) {
+                showHero();
+            }
+        }
+    </script>
+</body>
+</html>
