@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         animateRing();
 
         // Hover-эффект на интерактивных элементах
-        const hoverTargets = document.querySelectorAll("a, button, .project-card, .skill-tag, .social-card, input, textarea");
+        const hoverTargets = document.querySelectorAll("a, button, .timeline-card, .skill-tag, .social-card, input, textarea");
         hoverTargets.forEach(el => {
             el.addEventListener("mouseenter", () => ring.classList.add("hovered"));
             el.addEventListener("mouseleave", () => ring.classList.remove("hovered"));
@@ -135,96 +135,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "Escape" && menuOpen) toggleMenu();
     });
 
-    /* =============================================
-       CANVAS — ЧАСТИЦЫ В HERO
-       ============================================= */
-    const canvas = document.getElementById("heroCanvas");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    let animationId;
-
-    function resizeCanvas() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-    }
-
-    class Particle {
-        constructor() {
-            this.reset();
-        }
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.4;
-            this.speedY = (Math.random() - 0.5) * 0.4;
-            this.opacity = Math.random() * 0.5 + 0.1;
-            this.color = Math.random() > 0.5 ? "255,124,42" : "255,45,107";
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-                this.reset();
-            }
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
-            ctx.fill();
-        }
-    }
-
-    function initParticles() {
-        particles = [];
-        const count = Math.floor((canvas.width * canvas.height) / 8000);
-        for (let i = 0; i < Math.min(count, 120); i++) {
-            particles.push(new Particle());
-        }
-    }
-
-    function drawConnections() {
-        const maxDist = 120;
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < maxDist) {
-                    const opacity = (1 - dist / maxDist) * 0.15;
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(255,124,42,${opacity})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawConnections();
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        animationId = requestAnimationFrame(animateParticles);
-    }
-
-    resizeCanvas();
-    initParticles();
-    animateParticles();
-
-    window.addEventListener("resize", () => {
-        resizeCanvas();
-        initParticles();
-    });
 
     /* =============================================
        TYPEWRITER ЭФФЕКТ
+
        ============================================= */
     const typewriterEl = document.getElementById("typewriter");
     const phrases = [
