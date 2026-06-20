@@ -47,6 +47,13 @@
             label: 'WebGL Studio',
             icon: '✦',
             type: 'webgl'
+        },
+        punkt: {
+            bg: ['#0a1a0d', '#111f0f'],
+            colors: ['#4ade80', '#86efac', '#a3e635', '#fbbf24'],
+            label: 'Пункт Назначения',
+            icon: '🌲',
+            type: 'punkt'
         }
     };
 
@@ -336,116 +343,176 @@
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, W, H);
 
-        // Мини-карточки сверху
-        const cw = (W - 50) / 4;
-        [{ v: '₽48K', l: 'Revenue', c: 0 }, { v: '6', l: 'Projects', c: 1 },
-         { v: '8+', l: 'Skills', c: 2 }, { v: '2yr', l: 'XP', c: 3 }].forEach((d, i) => {
-            const cx = 14 + i * (cw + 8);
-            ctx.fillStyle = 'rgba(255,255,255,0.04)';
-            roundRect(ctx, cx, 14, cw, 35, 6);
+        if (W < 450) {
+            // Мобильная версия: только линейный график на всю ширину
+            const gx = 14, gy = 20, gw = W - 28, gh = H - 40;
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            roundRect(ctx, gx, gy, gw, gh, 8);
             ctx.fill();
-            ctx.strokeStyle = rgbA(theme.colors[i], 0.2);
-            ctx.lineWidth = 1;
-            roundRect(ctx, cx, 14, cw, 35, 6);
-            ctx.stroke();
-            ctx.fillStyle = theme.colors[i];
-            ctx.font = `bold 11px Outfit`;
-            ctx.textAlign = 'center';
-            ctx.fillText(d.v, cx + cw / 2, 30);
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
-            ctx.font = `500 7px Outfit`;
-            ctx.fillText(d.l, cx + cw / 2, 41);
-        });
 
-        // Линейный график
-        const gx = 14, gy = 58, gw = W * 0.6, gh = H - 85;
-        ctx.fillStyle = 'rgba(255,255,255,0.03)';
-        roundRect(ctx, gx, gy, gw, gh, 8);
-        ctx.fill();
+            // Сетка графика
+            for (let i = 0; i <= 4; i++) {
+                const y = gy + 10 + (gh - 25) * (i / 4);
+                ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(gx + 10, y);
+                ctx.lineTo(gx + gw - 10, y);
+                ctx.stroke();
+            }
 
-        // Сетка графика
-        for (let i = 0; i <= 4; i++) {
-            const y = gy + 10 + (gh - 25) * (i / 4);
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-            ctx.lineWidth = 0.5;
+            // Линия данных
+            const pts2 = [0.3, 0.5, 0.4, 0.7, 0.6, 0.85, 0.75, 0.9];
+            const pxw = (gw - 20) / (pts2.length - 1);
+
+            // Заливка под графиком
             ctx.beginPath();
-            ctx.moveTo(gx + 10, y);
-            ctx.lineTo(gx + gw - 10, y);
+            ctx.moveTo(gx + 10, gy + gh - 15);
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                i === 0 ? ctx.lineTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
+            });
+            ctx.lineTo(gx + 10 + (pts2.length - 1) * pxw, gy + gh - 15);
+            ctx.closePath();
+            const fillG = ctx.createLinearGradient(0, gy, 0, gy + gh);
+            fillG.addColorStop(0, rgbA(theme.colors[0], 0.2));
+            fillG.addColorStop(1, 'transparent');
+            ctx.fillStyle = fillG;
+            ctx.fill();
+
+            // Линия
+            ctx.beginPath();
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                i === 0 ? ctx.moveTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
+            });
+            ctx.strokeStyle = theme.colors[0];
+            ctx.lineWidth = 2;
             ctx.stroke();
+
+            // Точки
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fillStyle = theme.colors[0];
+                ctx.fill();
+            });
+        } else {
+            // Десктопная версия: карточки сверху + график + радар
+            const cw = (W - 50) / 4;
+            [{ v: '₽48K', l: 'Revenue', c: 0 }, { v: '6', l: 'Projects', c: 1 },
+             { v: '8+', l: 'Skills', c: 2 }, { v: '2yr', l: 'XP', c: 3 }].forEach((d, i) => {
+                const cx = 14 + i * (cw + 8);
+                ctx.fillStyle = 'rgba(255,255,255,0.04)';
+                roundRect(ctx, cx, 14, cw, 35, 6);
+                ctx.fill();
+                ctx.strokeStyle = rgbA(theme.colors[i], 0.2);
+                ctx.lineWidth = 1;
+                roundRect(ctx, cx, 14, cw, 35, 6);
+                ctx.stroke();
+                ctx.fillStyle = theme.colors[i];
+                ctx.font = `bold 11px Outfit`;
+                ctx.textAlign = 'center';
+                ctx.fillText(d.v, cx + cw / 2, 30);
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.font = `500 7px Outfit`;
+                ctx.fillText(d.l, cx + cw / 2, 41);
+            });
+
+            // Линейный график
+            const gx = 14, gy = 58, gw = W * 0.6, gh = H - 85;
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            roundRect(ctx, gx, gy, gw, gh, 8);
+            ctx.fill();
+
+            // Сетка графика
+            for (let i = 0; i <= 4; i++) {
+                const y = gy + 10 + (gh - 25) * (i / 4);
+                ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(gx + 10, y);
+                ctx.lineTo(gx + gw - 10, y);
+                ctx.stroke();
+            }
+
+            // Линия данных
+            const pts2 = [0.3, 0.5, 0.4, 0.7, 0.6, 0.85, 0.75, 0.9];
+            const pxw = (gw - 20) / (pts2.length - 1);
+
+            // Заливка под графиком
+            ctx.beginPath();
+            ctx.moveTo(gx + 10, gy + gh - 15);
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                i === 0 ? ctx.lineTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
+            });
+            ctx.lineTo(gx + 10 + (pts2.length - 1) * pxw, gy + gh - 15);
+            ctx.closePath();
+            const fillG = ctx.createLinearGradient(0, gy, 0, gy + gh);
+            fillG.addColorStop(0, rgbA(theme.colors[0], 0.2));
+            fillG.addColorStop(1, 'transparent');
+            ctx.fillStyle = fillG;
+            ctx.fill();
+
+            // Линия
+            ctx.beginPath();
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                i === 0 ? ctx.moveTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
+            });
+            ctx.strokeStyle = theme.colors[0];
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Точки
+            pts2.forEach((v, i) => {
+                const px = gx + 10 + i * pxw;
+                const py = gy + gh - 15 - (gh - 30) * v;
+                ctx.beginPath();
+                ctx.arc(px, py, 3, 0, Math.PI * 2);
+                ctx.fillStyle = theme.colors[0];
+                ctx.fill();
+            });
+
+            // Правая панель — радар навыков
+            const rx = gx + gw + 14, rw = W - rx - 14;
+            ctx.fillStyle = 'rgba(255,255,255,0.03)';
+            roundRect(ctx, rx, gy, rw, gh, 8);
+            ctx.fill();
+            const rcx = rx + rw / 2, rcy = gy + gh / 2, rr = Math.min(rw, gh) * 0.35;
+            const skills = [0.9, 0.75, 0.85, 0.6, 0.95, 0.7];
+            ctx.beginPath();
+            skills.forEach((v, i) => {
+                const a = (i / skills.length) * Math.PI * 2 - Math.PI / 2;
+                const px = rcx + Math.cos(a) * rr * v;
+                const py = rcy + Math.sin(a) * rr * v;
+                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            });
+            ctx.closePath();
+            ctx.fillStyle = rgbA(theme.colors[0], 0.15);
+            ctx.fill();
+            ctx.strokeStyle = rgbA(theme.colors[0], 0.6);
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Оси радара
+            skills.forEach((_, i) => {
+                const a = (i / skills.length) * Math.PI * 2 - Math.PI / 2;
+                ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(rcx, rcy);
+                ctx.lineTo(rcx + Math.cos(a) * rr, rcy + Math.sin(a) * rr);
+                ctx.stroke();
+            });
         }
-
-        // Линия данных
-        const pts2 = [0.3, 0.5, 0.4, 0.7, 0.6, 0.85, 0.75, 0.9];
-        const pxw = (gw - 20) / (pts2.length - 1);
-
-        // Заливка под графиком
-        ctx.beginPath();
-        ctx.moveTo(gx + 10, gy + gh - 15);
-        pts2.forEach((v, i) => {
-            const px = gx + 10 + i * pxw;
-            const py = gy + gh - 15 - (gh - 30) * v;
-            i === 0 ? ctx.lineTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
-        });
-        ctx.lineTo(gx + 10 + (pts2.length - 1) * pxw, gy + gh - 15);
-        ctx.closePath();
-        const fillG = ctx.createLinearGradient(0, gy, 0, gy + gh);
-        fillG.addColorStop(0, rgbA(theme.colors[0], 0.2));
-        fillG.addColorStop(1, 'transparent');
-        ctx.fillStyle = fillG;
-        ctx.fill();
-
-        // Линия
-        ctx.beginPath();
-        pts2.forEach((v, i) => {
-            const px = gx + 10 + i * pxw;
-            const py = gy + gh - 15 - (gh - 30) * v;
-            i === 0 ? ctx.moveTo(px, py) : ctx.bezierCurveTo(px - pxw * 0.4, gy + gh - 15 - (gh - 30) * pts2[i - 1], px - pxw * 0.6, py, px, py);
-        });
-        ctx.strokeStyle = theme.colors[0];
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Точки
-        pts2.forEach((v, i) => {
-            const px = gx + 10 + i * pxw;
-            const py = gy + gh - 15 - (gh - 30) * v;
-            ctx.beginPath();
-            ctx.arc(px, py, 3, 0, Math.PI * 2);
-            ctx.fillStyle = theme.colors[0];
-            ctx.fill();
-        });
-
-        // Правая панель — радар навыков
-        const rx = gx + gw + 14, rw = W - rx - 14;
-        ctx.fillStyle = 'rgba(255,255,255,0.03)';
-        roundRect(ctx, rx, gy, rw, gh, 8);
-        ctx.fill();
-        const rcx = rx + rw / 2, rcy = gy + gh / 2, rr = Math.min(rw, gh) * 0.35;
-        const skills = [0.9, 0.75, 0.85, 0.6, 0.95, 0.7];
-        ctx.beginPath();
-        skills.forEach((v, i) => {
-            const a = (i / skills.length) * Math.PI * 2 - Math.PI / 2;
-            const px = rcx + Math.cos(a) * rr * v;
-            const py = rcy + Math.sin(a) * rr * v;
-            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-        });
-        ctx.closePath();
-        ctx.fillStyle = rgbA(theme.colors[0], 0.15);
-        ctx.fill();
-        ctx.strokeStyle = rgbA(theme.colors[0], 0.6);
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Оси радара
-        skills.forEach((_, i) => {
-            const a = (i / skills.length) * Math.PI * 2 - Math.PI / 2;
-            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(rcx, rcy);
-            ctx.lineTo(rcx + Math.cos(a) * rr, rcy + Math.sin(a) * rr);
-            ctx.stroke();
-        });
 
         drawLabel(ctx, W, H, theme.label, theme.colors[0]);
     }
@@ -525,7 +592,6 @@
         drawLabel(ctx, W, H, theme.label, theme.colors[0]);
     }
 
-    /* ── WebGL Studio: шейдеры + 3D ────────── */
     function drawWebGL(ctx, W, H, t, theme) {
         ctx.fillStyle = theme.bg[0];
         ctx.fillRect(0, 0, W, H);
@@ -584,30 +650,177 @@
             ctx.fill();
         });
 
-        // Панель редактора справа
-        const epx = W * 0.68, epy = 12, epw = W * 0.3, eph = H - 24;
-        ctx.fillStyle = 'rgba(0,0,0,0.4)';
-        roundRect(ctx, epx, epy, epw, eph, 6);
-        ctx.fill();
-        ctx.strokeStyle = rgbA(theme.colors[0], 0.2);
-        ctx.lineWidth = 1;
-        roundRect(ctx, epx, epy, epw, eph, 6);
-        ctx.stroke();
+        // Панель редактора справа (только на десктопе/планшетах)
+        if (W >= 450) {
+            const epx = W * 0.68, epy = 12, epw = W * 0.3, eph = H - 24;
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            roundRect(ctx, epx, epy, epw, eph, 6);
+            ctx.fill();
+            ctx.strokeStyle = rgbA(theme.colors[0], 0.2);
+            ctx.lineWidth = 1;
+            roundRect(ctx, epx, epy, epw, eph, 6);
+            ctx.stroke();
 
-        // Строки кода
-        const lines = [
-            { t: 'void main() {', c: theme.colors[1] },
-            { t: '  float d = length(', c: '#fff' },
-            { t: '    uv - 0.5);', c: '#fff' },
-            { t: '  col = mix(a, b,', c: theme.colors[0] },
-            { t: '    sin(d*8.+t));', c: '#fff' },
-            { t: '}', c: theme.colors[1] },
-        ];
-        ctx.font = '7px JetBrains Mono';
-        ctx.textAlign = 'left';
-        lines.forEach((l, i) => {
-            ctx.fillStyle = l.c + 'CC';
-            ctx.fillText(l.t, epx + 8, epy + 20 + i * 12);
+            // Строки кода
+            const lines = [
+                { t: 'void main() {', c: theme.colors[1] },
+                { t: '  float d = length(', c: '#fff' },
+                { t: '    uv - 0.5);', c: '#fff' },
+                { t: '  col = mix(a, b,', c: theme.colors[0] },
+                { t: '    sin(d*8.+t));', c: '#fff' },
+                { t: '}', c: theme.colors[1] },
+            ];
+            ctx.font = '7px JetBrains Mono';
+            ctx.textAlign = 'left';
+            lines.forEach((l, i) => {
+                ctx.fillStyle = l.c + 'CC';
+                ctx.fillText(l.t, epx + 8, epy + 20 + i * 12);
+            });
+        }
+
+        drawLabel(ctx, W, H, theme.label, theme.colors[0]);
+    }
+
+    /* ── Punkt: природный глэмпинг ─────────── */
+    function drawPunkt(ctx, W, H, t, theme) {
+        // Ночное небо → лесной фон
+        const g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#060e08');
+        g.addColorStop(0.55, theme.bg[0]);
+        g.addColorStop(1, theme.bg[1]);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+
+        // Звёзды
+        const stars = (ctx._stars_punkt = ctx._stars_punkt || Array.from({ length: 60 }, () => ({
+            x: rand(0, W), y: rand(0, H * 0.5),
+            r: rand(0.5, 1.8), phase: rand(0, Math.PI * 2)
+        })));
+        stars.forEach(s => {
+            const alpha = 0.4 + 0.6 * Math.sin(t * 0.0008 + s.phase);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(200,255,210,${alpha})`;
+            ctx.fill();
+        });
+
+        // Луна
+        const mx = W * 0.82, my = H * 0.18;
+        const moonGlow = ctx.createRadialGradient(mx, my, 0, mx, my, 28);
+        moonGlow.addColorStop(0, 'rgba(251,191,36,0.25)');
+        moonGlow.addColorStop(1, 'transparent');
+        ctx.fillStyle = moonGlow;
+        ctx.beginPath();
+        ctx.arc(mx, my, 28, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(mx, my, 12, 0, Math.PI * 2);
+        const moonFill = ctx.createRadialGradient(mx - 3, my - 3, 0, mx, my, 12);
+        moonFill.addColorStop(0, '#fffde8');
+        moonFill.addColorStop(1, '#fbbf24');
+        ctx.fillStyle = moonFill;
+        ctx.fill();
+
+        // Силуэты деревьев (задний план, тёмные)
+        function drawTree(bx, bh, layers, color) {
+            for (let i = 0; i < layers; i++) {
+                const ly = H - bh + i * (bh / layers * 0.6);
+                const lw = (bh / layers) * (layers - i) * 0.9;
+                ctx.beginPath();
+                ctx.moveTo(bx, ly - lw * 0.7);
+                ctx.lineTo(bx + lw * 0.5, ly + lw * 0.15);
+                ctx.lineTo(bx - lw * 0.5, ly + lw * 0.15);
+                ctx.closePath();
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+            // Ствол
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.fillRect(bx - 3, H - 18, 6, 20);
+        }
+
+        // Дальние деревья (тёмно-зелёные)
+        const farTrees = (ctx._far_trees = ctx._far_trees || [
+            { x: W*0.05, h: 70 }, { x: W*0.15, h: 85 }, { x: W*0.25, h: 65 },
+            { x: W*0.35, h: 90 }, { x: W*0.55, h: 75 }, { x: W*0.65, h: 88 },
+            { x: W*0.75, h: 72 }, { x: W*0.88, h: 80 }, { x: W*0.95, h: 68 }
+        ]);
+        farTrees.forEach(tr => drawTree(tr.x, tr.h, 3, 'rgba(15,30,15,0.85)'));
+
+        // А-frame домики
+        function drawAframe(cx, groundY, sz, lit) {
+            // Треугольная крыша
+            ctx.beginPath();
+            ctx.moveTo(cx, groundY - sz * 1.8);
+            ctx.lineTo(cx + sz * 0.7, groundY);
+            ctx.lineTo(cx - sz * 0.7, groundY);
+            ctx.closePath();
+            const roofG = ctx.createLinearGradient(cx, groundY - sz * 1.8, cx, groundY);
+            roofG.addColorStop(0, 'rgba(40,60,40,0.95)');
+            roofG.addColorStop(1, 'rgba(25,40,25,0.95)');
+            ctx.fillStyle = roofG;
+            ctx.fill();
+            ctx.strokeStyle = rgbA(theme.colors[0], 0.3);
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            // Окошко-треугольник (светится)
+            if (lit) {
+                const pulse = 0.5 + 0.5 * Math.sin(t * 0.002 + cx);
+                ctx.beginPath();
+                ctx.moveTo(cx, groundY - sz * 1.2);
+                ctx.lineTo(cx + sz * 0.25, groundY - sz * 0.75);
+                ctx.lineTo(cx - sz * 0.25, groundY - sz * 0.75);
+                ctx.closePath();
+                ctx.fillStyle = `rgba(251,191,36,${0.35 + pulse * 0.25})`;
+                ctx.fill();
+                // Свечение окна
+                const wg = ctx.createRadialGradient(cx, groundY - sz * 0.95, 0, cx, groundY - sz * 0.95, sz * 0.5);
+                wg.addColorStop(0, `rgba(251,191,36,${0.12 * pulse})`);
+                wg.addColorStop(1, 'transparent');
+                ctx.fillStyle = wg;
+                ctx.fillRect(cx - sz, groundY - sz * 1.5, sz * 2, sz * 1.2);
+            }
+        }
+
+        const groundY = H - 22;
+        drawAframe(W * 0.28, groundY, 32, true);
+        drawAframe(W * 0.52, groundY, 26, false);
+        drawAframe(W * 0.7, groundY, 22, true);
+
+        // Передние деревья (зеленее)
+        [
+            { x: W*0.0, h: 55 }, { x: W*0.42, h: 60 }, { x: W*0.6, h: 48 },
+            { x: W*0.82, h: 52 }, { x: W*1.0, h: 58 }
+        ].forEach(tr => drawTree(tr.x, tr.h, 3, rgbA(theme.colors[0], 0.15)));
+
+        // Земля (трава)
+        const earthG = ctx.createLinearGradient(0, groundY, 0, H);
+        earthG.addColorStop(0, rgbA(theme.colors[0], 0.25));
+        earthG.addColorStop(1, 'rgba(5,12,5,0.9)');
+        ctx.fillStyle = earthG;
+        ctx.fillRect(0, groundY, W, H - groundY);
+
+        // Летящие листья
+        const leaves = (ctx._leaves_punkt = ctx._leaves_punkt || Array.from({ length: 18 }, () => ({
+            x: rand(0, W), y: rand(0, H * 0.75),
+            vx: rand(-0.4, 0.4), vy: rand(0.2, 0.6),
+            size: rand(3, 6), angle: rand(0, Math.PI * 2),
+            va: rand(-0.02, 0.02),
+            c: theme.colors[Math.floor(rand(0, 3))]
+        })));
+        leaves.forEach(l => {
+            l.x += l.vx + Math.sin(t * 0.001 + l.y) * 0.3;
+            l.y += l.vy;
+            l.angle += l.va;
+            if (l.y > H) { l.y = -10; l.x = rand(0, W); }
+            ctx.save();
+            ctx.translate(l.x, l.y);
+            ctx.rotate(l.angle);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, l.size, l.size * 0.55, 0, 0, Math.PI * 2);
+            ctx.fillStyle = rgbA(l.c, 0.7);
+            ctx.fill();
+            ctx.restore();
         });
 
         drawLabel(ctx, W, H, theme.label, theme.colors[0]);
@@ -702,7 +915,8 @@
         moodle: drawMoodle,
         dashboard: drawDashboard,
         nft: drawNFT,
-        webgl: drawWebGL
+        webgl: drawWebGL,
+        punkt: drawPunkt
     };
 
     function initCanvas(canvas) {
