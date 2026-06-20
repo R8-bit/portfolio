@@ -386,6 +386,8 @@ img { max-width: 100%; display: block; }
     display: flex;
     align-items: center;
     gap: 2px;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .cursor-blink {
@@ -560,6 +562,8 @@ img { max-width: 100%; display: block; }
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .skill-tag {
@@ -622,6 +626,8 @@ img { max-width: 100%; display: block; }
     font-size: 0.95rem;
     line-height: 2;
     overflow-x: auto;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Подсветка синтаксиса */
@@ -1431,6 +1437,28 @@ img { max-width: 100%; display: block; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .hero-buttons { flex-direction: column; }
     .btn { justify-content: center; }
+
+    /* Фикс вылета текста и тегов за правый край */
+    .about-text {
+        overflow: hidden;
+        max-width: 100%;
+    }
+    .skills-list {
+        overflow: hidden;
+    }
+    .skill-tag {
+        max-width: 100%;
+        white-space: nowrap;
+    }
+    .code-card {
+        overflow: hidden;
+    }
+    .code-body {
+        font-size: 0.78rem;
+        padding: 1.2rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /* =============================================

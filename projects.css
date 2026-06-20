@@ -1,12 +1,13 @@
 /* =============================================
-   PROJECTS — DAVID BLAINE FULLWIDTH STYLE
+   PROJECTS — TIMELINE STYLE
    ============================================= */
 
 /* ── Секция-обёртка ───────────────────── */
 .proj-section {
     background: #000;
-    padding: 0;
+    padding: 0 0 8rem;
     margin: 0;
+    position: relative;
     overflow: hidden;
 }
 
@@ -51,31 +52,208 @@
     margin: 0;
 }
 
-/* ── Строка проекта ───────────────────── */
-.proj-row {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    min-height: 90vh;
+/* ── Таймлайн Контейнер ───────────────── */
+.timeline-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
     position: relative;
+}
+
+/* Вертикальная линия */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        rgba(255,124,42,0.6), 
+        rgba(255,45,107,0.6) 50%, 
+        rgba(255,124,42,0.6)
+    );
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+/* Элемент таймлайна */
+.timeline-item {
+    display: flex;
+    width: 100%;
+    margin-bottom: 6rem;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Направление элементов на десктопе */
+.timeline-item.left-item {
+    flex-direction: row-reverse;
+}
+
+.timeline-item.right-item {
+    flex-direction: row;
+}
+
+/* Ограничение ширины карточки */
+.timeline-item.left-item .timeline-card {
+    margin-right: 50%;
+    padding-right: 40px;
+}
+
+.timeline-item.right-item .timeline-card {
+    margin-left: 50%;
+    padding-left: 40px;
+}
+
+/* Карточка проекта */
+.timeline-card {
+    width: 100%;
+    background: #0d0813;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius, 16px);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
+                box-shadow 0.4s ease, 
+                border-color 0.3s;
+}
+
+.timeline-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 124, 42, 0.4);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 124, 42, 0.15);
+}
+
+/* Плашка года */
+.timeline-year {
+    padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    position: relative;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Цвета плашек */
+.timeline-year.year-gray {
+    background: #505054;
+    color: #fff;
+}
+
+.timeline-year.year-gold {
+    background: #e4d5b5;
+    color: #1a1008;
+}
+
+/* Выравнивание текста года */
+.left-item .timeline-year {
+    text-align: right;
+}
+
+.right-item .timeline-year {
+    text-align: left;
+}
+
+/* Стрелочка на плашке года */
+.timeline-year .year-arrow {
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Левая карточка: стрелочка справа, указывает на центр */
+.left-item .timeline-year .year-arrow {
+    right: -10px;
+    border-width: 10px 0 10px 10px;
+}
+
+.left-item .timeline-year.year-gray .year-arrow {
+    border-color: transparent transparent transparent #505054;
+}
+
+.left-item .timeline-year.year-gold .year-arrow {
+    border-color: transparent transparent transparent #e4d5b5;
+}
+
+/* Правая карточка: стрелочка слева, указывает на центр */
+.right-item .timeline-year .year-arrow {
+    left: -10px;
+    border-width: 10px 10px 10px 0;
+}
+
+.right-item .timeline-year.year-gray .year-arrow {
+    border-color: transparent #505054 transparent transparent;
+}
+
+.right-item .timeline-year.year-gold .year-arrow {
+    border-color: transparent #e4d5b5 transparent transparent;
+}
+
+/* Кружочек на линии таймлайна */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 22px; /* уровень по центру плашки года */
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0c0810;
+    border: 2px solid rgba(255, 124, 42, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 124, 42, 0.9);
+    box-shadow: 0 0 15px rgba(255, 124, 42, 0.4);
+    z-index: 3;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: background 0.35s var(--ease), 
+                border-color 0.35s var(--ease), 
+                transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                color 0.35s var(--ease),
+                box-shadow 0.35s var(--ease);
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: translate(-50%, -50%) scale(1.15);
+    background: #ff7c2a;
+    border-color: #ffb347;
+    color: #fff;
+    box-shadow: 0 0 25px rgba(255, 124, 42, 0.8);
+}
+
+.timeline-dot svg {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 20px;
+    max-height: 20px;
+    display: block;
+    flex-shrink: 0;
     overflow: hidden;
 }
 
-.proj-row-reverse {
-    grid-template-columns: 45% 55%;
-    direction: rtl;
-}
-
-.proj-row-reverse > * {
-    direction: ltr;
-}
-
-/* ── Визуальная часть ─────────────────── */
-.proj-visual {
+/* ── Визуальная часть (Canvas) ────────── */
+.timeline-visual {
+    height: 260px;
     position: relative;
     overflow: hidden;
+    background: #000;
 }
 
-.proj-visual canvas {
+.timeline-visual canvas {
     width: 100%;
     height: 100%;
     display: block;
@@ -83,62 +261,26 @@
     transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.proj-row:hover .proj-visual canvas {
-    transform: scale(1.04);
-}
-
-/* Градиентные переходы */
-.proj-visual-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-}
-
-.proj-overlay-right {
-    background: linear-gradient(
-        to right,
-        transparent 55%,
-        rgba(0, 0, 0, 0.7) 80%,
-        #000 100%
-    );
-}
-
-.proj-overlay-left {
-    background: linear-gradient(
-        to left,
-        transparent 55%,
-        rgba(0, 0, 0, 0.7) 80%,
-        #000 100%
-    );
+.timeline-card:hover .timeline-visual canvas {
+    transform: scale(1.03);
 }
 
 /* ── Контентная часть ─────────────────── */
-.proj-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 4rem 5% 4rem 3%;
+.timeline-content {
+    padding: 2.2rem;
+    background: #0d0813;
     position: relative;
-    z-index: 5;
-    background: #000;
 }
 
-.proj-content-left {
-    padding: 4rem 3% 4rem 5%;
-}
-
-/* ── Номер ────────────────────────────── */
 .proj-num {
     display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 4px;
     color: rgba(255, 124, 42, 0.45);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
-/* ── Категория ────────────────────────── */
 .proj-cat {
     display: block;
     font-family: 'JetBrains Mono', monospace;
@@ -146,40 +288,36 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.28);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
 }
 
-/* ── Заголовок проекта ────────────────── */
 .proj-title {
-    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-size: 2rem;
     font-weight: 900;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
     color: #fff;
-    line-height: 1.05;
-    margin: 0 0 1.5rem;
+    line-height: 1.1;
+    margin: 0 0 1.2rem;
     text-transform: uppercase;
     transition: color 0.3s;
 }
 
-.proj-row:hover .proj-title {
+.timeline-card:hover .proj-title {
     color: #ff7c2a;
 }
 
-/* ── Описание ─────────────────────────── */
 .proj-desc {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: rgba(255, 255, 255, 0.45);
-    line-height: 1.75;
-    max-width: 440px;
+    line-height: 1.7;
     margin-bottom: 2rem;
 }
 
-/* ── Теги ─────────────────────────────── */
 .proj-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2.2rem;
 }
 
 .proj-tags span {
@@ -193,12 +331,11 @@
     transition: all 0.25s;
 }
 
-.proj-row:hover .proj-tags span {
+.timeline-card:hover .proj-tags span {
     color: rgba(255, 124, 42, 0.7);
     border-color: rgba(255, 124, 42, 0.25);
 }
 
-/* ── Кнопка ───────────────────────────── */
 .proj-btn {
     display: inline-flex;
     align-items: center;
@@ -239,64 +376,73 @@
     transform: scaleX(1);
 }
 
-/* ── Разделитель между проектами ──────── */
-.proj-row + .proj-row {
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-/* Горизонтальная линия-акцент слева */
-.proj-content::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 0;
-    background: linear-gradient(to bottom, transparent, #ff7c2a, transparent);
-    transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.proj-row:hover .proj-content::before {
-    height: 120px;
-}
-
-.proj-content-left::before {
-    left: auto;
-    right: 0;
-}
-
-/* ── Адаптив ──────────────────────────── */
+/* ── Адаптивность ────────────────────── */
 @media (max-width: 900px) {
-    .proj-row,
-    .proj-row-reverse {
-        grid-template-columns: 1fr;
-        grid-template-rows: 50vh auto;
-        direction: ltr;
-        min-height: auto;
+    .timeline-item.left-item .timeline-card {
+        padding-right: 20px;
+    }
+    .timeline-item.right-item .timeline-card {
+        padding-left: 20px;
+    }
+    .timeline-dot {
+        width: 38px;
+        height: 38px;
+    }
+    .timeline-dot svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 30px;
+        transform: none;
     }
 
-    .proj-row-reverse > * { direction: ltr; }
-
-    .proj-visual { height: 50vh; }
-
-    .proj-overlay-right,
-    .proj-overlay-left {
-        background: linear-gradient(to bottom, transparent 40%, #000 100%);
+    .timeline-item {
+        flex-direction: row !important;
+        margin-bottom: 4rem;
     }
 
-    .proj-content,
-    .proj-content-left {
-        padding: 3rem 2rem 4rem;
-        background: #000;
+    .timeline-item.left-item .timeline-card,
+    .timeline-item.right-item .timeline-card {
+        margin-left: 60px;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        max-width: calc(100% - 60px);
     }
 
-    .proj-title { font-size: 2rem; }
-    .proj-desc { max-width: 100%; }
+    .timeline-dot {
+        left: 30px;
+        transform: translate(-50%, -50%);
+        top: 22px;
+    }
+
+    /* Все плашки года ориентированы влево */
+    .timeline-year {
+        text-align: left !important;
+    }
+
+    .timeline-year .year-arrow {
+        left: -10px !important;
+        right: auto !important;
+        border-width: 10px 10px 10px 0 !important;
+    }
+
+    .timeline-year.year-gray .year-arrow {
+        border-color: transparent #505054 transparent transparent !important;
+    }
+
+    .timeline-year.year-gold .year-arrow {
+        border-color: transparent #e4d5b5 transparent transparent !important;
+    }
 }
 
 @media (max-width: 480px) {
     .proj-main-title { font-size: 3rem; letter-spacing: -2px; }
-    .proj-title { font-size: 1.7rem; }
     .proj-header { padding: 5rem 1.5rem 4rem; }
+    .timeline-content { padding: 1.5rem; }
+    .proj-title { font-size: 1.7rem; }
 }
