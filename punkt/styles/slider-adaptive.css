@@ -1,0 +1,376 @@
+.slider-container {
+    touch-action: pan-y pinch-zoom;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.slider-image {
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.slider-image:active {
+    cursor: grabbing;
+}
+
+.slider-image img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+.slider-arrow {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dot {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+}
+
+/* Swipe подсказка - скрыта по умолчанию */
+.swipe-hint {
+    display: none;
+    text-align: center;
+    color: var(--text-muted, #aaaaaa);
+    font-size: 14px;
+    margin-top: 15px;
+    opacity: 0.7;
+    animation: fadeInHint 0.5s ease;
+}
+
+.swipe-hint svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin: 0 5px;
+    animation: swipeAnimation 1.5s ease-in-out infinite;
+}
+
+@keyframes swipeAnimation {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+}
+
+@keyframes fadeInHint {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 0.7; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   TABLET (max-width: 968px) - твой оригинальный брейкпоинт
+   ========================================================================== */
+@media (max-width: 968px) {
+    .slider-section {
+        padding: 80px 5%;
+    }
+
+    .slider-section h2 {
+        font-size: 28px;
+        margin-bottom: 50px;
+    }
+
+    .slider-wrapper {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .slider-image {
+        width: 100%;
+        height: 350px;
+        flex: none;
+    }
+
+    .slider-content {
+        width: 100%;
+        flex: none;
+    }
+
+    .slider-arrow {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+    }
+
+    .slider-arrow:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+}
+
+/* ==========================================================================
+   MOBILE LARGE (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .slider-section {
+        padding: 60px 4%;
+    }
+
+    .slider-section h2 {
+        font-size: 26px;
+        margin-bottom: 40px;
+    }
+
+    .slider-image {
+        height: 300px;
+        border-radius: 15px;
+    }
+
+    .slider-text-box {
+        padding: 30px 25px;
+        min-height: 150px;
+    }
+
+    .slider-text {
+        font-size: 17px;
+        left: 25px;
+        right: 25px;
+    }
+
+    .slider-arrow {
+        width: 50px;
+        height: 50px;
+        right: 15px;
+    }
+
+    .slider-arrow svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .slider-dots {
+        margin-top: 35px;
+        gap: 10px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    .swipe-hint {
+        display: block;
+    }
+}
+
+/* ==========================================================================
+   MOBILE (max-width: 425px)
+   ========================================================================== */
+@media (max-width: 425px) {
+    .slider-section {
+        padding: 50px 3%;
+    }
+
+    .slider-section h2 {
+        font-size: 22px;
+        margin-bottom: 30px;
+    }
+
+    .slider-wrapper {
+        gap: 25px;
+    }
+
+    .slider-image {
+        height: 240px;
+        border-radius: 12px;
+    }
+
+    .slider-text-box {
+        padding: 25px 20px;
+        min-height: 130px;
+        border-left-width: 3px;
+    }
+
+    .slider-text {
+        font-size: 15px;
+        line-height: 1.5;
+        left: 20px;
+        right: 20px;
+    }
+
+    .slider-arrow {
+        width: 45px;
+        height: 45px;
+        right: 10px;
+    }
+
+    .slider-arrow svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .slider-dots {
+        margin-top: 30px;
+        gap: 8px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .swipe-hint {
+        font-size: 13px;
+    }
+
+    .swipe-hint svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* ==========================================================================
+   SMALL MOBILE (max-width: 375px)
+   ========================================================================== */
+@media (max-width: 375px) {
+    .slider-section {
+        padding: 40px 3%;
+    }
+
+    .slider-section h2 {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    .slider-image {
+        height: 200px;
+        border-radius: 10px;
+    }
+
+    .slider-text-box {
+        padding: 20px 15px;
+        min-height: 120px;
+    }
+
+    .slider-text {
+        font-size: 14px;
+        left: 15px;
+        right: 15px;
+    }
+
+    .slider-arrow {
+        width: 40px;
+        height: 40px;
+    }
+
+    .slider-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .slider-dots {
+        margin-top: 25px;
+    }
+
+    .dot {
+        width: 9px;
+        height: 9px;
+    }
+}
+
+/* ==========================================================================
+   EXTRA SMALL (max-width: 320px)
+   ========================================================================== */
+@media (max-width: 320px) {
+    .slider-section {
+        padding: 35px 2%;
+    }
+
+    .slider-section h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .slider-wrapper {
+        gap: 20px;
+    }
+
+    .slider-image {
+        height: 170px;
+        border-radius: 8px;
+    }
+
+    .slider-text-box {
+        padding: 18px 12px;
+        min-height: 110px;
+        border-left-width: 2px;
+    }
+
+    .slider-text {
+        font-size: 13px;
+        line-height: 1.4;
+        left: 12px;
+        right: 12px;
+    }
+
+    .slider-arrow {
+        width: 36px;
+        height: 36px;
+        right: 8px;
+    }
+
+    .slider-arrow svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .slider-dots {
+        margin-top: 20px;
+        gap: 6px;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .swipe-hint {
+        font-size: 11px;
+        margin-top: 10px;
+    }
+
+    .swipe-hint svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ==========================================================================
+   LANDSCAPE MODE (маленькая высота)
+   ========================================================================== */
+@media (max-height: 500px) and (orientation: landscape) {
+    .slider-section {
+        padding: 30px 5%;
+    }
+
+    .slider-image {
+        height: 180px;
+    }
+
+    .slider-text-box {
+        min-height: 90px;
+        padding: 15px 20px;
+    }
+
+    .slider-text {
+        font-size: 14px;
+    }
+}
+
+/* ==========================================================================
+   REDUCED MOTION (для accessibility)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .slider-arrow,
+    .dot {
+        transition: none !important;
+    }
+
+    .swipe-hint svg {
+        animation: none;
+    }
+}
