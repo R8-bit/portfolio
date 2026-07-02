@@ -10,11 +10,29 @@
         const text = el.textContent;
         el.setAttribute('data-text', text); // для glitch
         el.innerHTML = '';
-        text.split('').forEach(char => {
-            const span = document.createElement('span');
-            span.className = 'char';
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            el.appendChild(span);
+        
+        const words = text.split(' ');
+        words.forEach((word, wordIdx) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.style.whiteSpace = 'nowrap';
+            wordSpan.style.display = 'inline-block';
+            
+            word.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char;
+                wordSpan.appendChild(span);
+            });
+            
+            el.appendChild(wordSpan);
+            
+            // Пробел между словами
+            if (wordIdx < words.length - 1) {
+                const spaceSpan = document.createElement('span');
+                spaceSpan.className = 'char';
+                spaceSpan.textContent = '\u00A0';
+                el.appendChild(spaceSpan);
+            }
         });
     }
 
@@ -217,24 +235,12 @@
             }
         });
 
-        // Project cards — из разных сторон
-        gsap.fromTo('.project-card:nth-child(1)', {
-            x: -80, opacity: 0
+        // Элементы таймлайна — stagger появление снизу
+        gsap.fromTo('.timeline-item', {
+            y: 60, opacity: 0
         }, {
-            x: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
-            scrollTrigger: { trigger: '.projects-grid', start: 'top 78%', once: true }
-        });
-        gsap.fromTo('.project-card:nth-child(2)', {
-            y: 80, opacity: 0
-        }, {
-            y: 0, opacity: 1, duration: 0.9, delay: 0.15, ease: 'power3.out',
-            scrollTrigger: { trigger: '.projects-grid', start: 'top 78%', once: true }
-        });
-        gsap.fromTo('.project-card:nth-child(3)', {
-            x: 80, opacity: 0
-        }, {
-            x: 0, opacity: 1, duration: 0.9, delay: 0.3, ease: 'power3.out',
-            scrollTrigger: { trigger: '.projects-grid', start: 'top 78%', once: true }
+            y: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: 'power3.out',
+            scrollTrigger: { trigger: '.timeline-container', start: 'top 75%', once: true }
         });
 
         // Contact section
@@ -274,7 +280,7 @@
 
     /* ── 10. Hover tilt на карточках проектов ── */
     function initTilt() {
-        document.querySelectorAll('.project-card').forEach(card => {
+        document.querySelectorAll('.timeline-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const cx = rect.left + rect.width / 2;

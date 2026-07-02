@@ -188,8 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .from(".hero-badge", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.4")
         .from(".hero-title", { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
         .from(".hero-subtitle", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.5")
-        .from(".hero-buttons .btn", {
-            y: 20, opacity: 0, duration: 0.5, stagger: 0.15, ease: "power3.out"
+        .from(".hero-buttons", {
+            y: 20, opacity: 0, duration: 0.5, ease: "power3.out"
         }, "-=0.4")
         .from(".hero-scroll-hint", { opacity: 0, duration: 0.5 }, "-=0.2")
         .from(".avatar-container", {
@@ -206,7 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const statNumbers = document.querySelectorAll(".stat-number");
 
     function countUp(el) {
-        const target = parseInt(el.getAttribute("data-target"));
+        const targetStr = el.getAttribute("data-target");
+        const target = parseInt(targetStr);
+        if (isNaN(target)) {
+            el.textContent = targetStr.trim();
+            return;
+        }
         const duration = 1500;
         const start = performance.now();
 

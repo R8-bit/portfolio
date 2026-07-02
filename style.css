@@ -696,6 +696,14 @@ img { max-width: 100%; display: block; }
     -webkit-text-fill-color: transparent;
 }
 
+.stat-card-text .stat-number,
+.stat-card-text .stat-plus {
+    display: block;
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    line-height: 1.1;
+    margin-bottom: 0.2rem;
+}
+
 .stat-label {
     display: block;
     margin-top: 0.5rem;
@@ -765,6 +773,12 @@ img { max-width: 100%; display: block; }
     font-size: 1.4rem;
     background: rgba(255, 124, 42, 0.08);
     border: 1px solid rgba(255, 124, 42, 0.18);
+}
+
+.service-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
 }
 
 .service-number {
@@ -850,6 +864,12 @@ img { max-width: 100%; display: block; }
 .services-bottom-icon {
     font-size: 2rem;
     flex-shrink: 0;
+}
+
+.services-bottom-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: #ffffff;
 }
 
 .services-bottom-text strong {

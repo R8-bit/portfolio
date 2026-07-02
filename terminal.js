@@ -51,6 +51,8 @@
   <span class="t-str">HTML5</span>  <span class="t-bar">████████████████████</span> <span class="t-num">95%</span>
   <span class="t-str">CSS3</span>   <span class="t-bar">██████████████████░░</span> <span class="t-num">90%</span>
   <span class="t-str">JS</span>     <span class="t-bar">█████████████████░░░</span> <span class="t-num">85%</span>
+  <span class="t-str">TS</span>     <span class="t-bar">████████████████░░░░</span> <span class="t-num">80%</span>
+  <span class="t-str">React</span>  <span class="t-bar">█████████████████░░░</span> <span class="t-num">85%</span>
 
 <span class="t-kw">▸ Анимации</span>
   <span class="t-str">GSAP</span>    <span class="t-bar">████████████████████</span> <span class="t-num">95%</span>
@@ -67,19 +69,19 @@
             run: () => `
 <span class="t-kw">▸ Проекты:</span>
 
-  <span class="t-accent">01.</span> <span class="t-str">OPA 201</span>
-     <span class="t-muted">Сайт городской футбольной лиги</span>
-     <span class="t-tag">HLS</span> <span class="t-tag">GSAP</span> <span class="t-tag">Canvas</span>
-     <span class="t-link" data-href="#projects">→ посмотреть</span>
-
-  <span class="t-accent">02.</span> <span class="t-str">Juggler</span>
+  <span class="t-accent">01.</span> <span class="t-str">Juggler</span>
      <span class="t-muted">Платформа управления задачами</span>
      <span class="t-tag">Node.js</span> <span class="t-tag">Canvas</span> <span class="t-tag">Auth</span>
      <span class="t-link" data-href="#projects">→ посмотреть</span>
 
-  <span class="t-accent">03.</span> <span class="t-str">Moodle v2</span>
-     <span class="t-muted">LMS система с HLS-видеолекциями</span>
-     <span class="t-tag">Canvas</span> <span class="t-tag">HLS</span> <span class="t-tag">Admin Panel</span>
+  <span class="t-accent">02.</span> <span class="t-str">WebGL Studio</span>
+     <span class="t-muted">Интерактивная студия для WebGL-шейдеров и 3D-визуализаций.</span>
+     <span class="t-tag">WebGL</span> <span class="t-tag">GLSL</span> <span class="t-tag">Three.js</span>
+     <span class="t-link" data-href="#projects">→ посмотреть</span>
+
+  <span class="t-accent">03.</span> <span class="t-str">Пункт Назначения</span>
+     <span class="t-muted">Сайт для природного глэмпинга с А-frame домиками.</span>
+     <span class="t-tag">HTML</span> <span class="t-tag">CSS</span> <span class="t-tag">GSAP</span>
      <span class="t-link" data-href="#projects">→ посмотреть</span>`
         },
 
@@ -103,7 +105,6 @@
 
   <span class="t-prop">Проектов завершено:</span>  <span class="t-num">3+</span>
   <span class="t-prop">Лет практики:</span>       <span class="t-num">2+</span>
-  <span class="t-prop">Технологий:</span>          <span class="t-num">8+</span>
   <span class="t-prop">Чашек кофе:</span>          <span class="t-num">∞</span>
   <span class="t-prop">Строк кода:</span>          <span class="t-num">50,000+</span>
   <span class="t-prop">Багов исправлено:</span>    <span class="t-num">тоже много</span>
